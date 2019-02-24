@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE configuration
+        PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-config.dtd">
+<configuration>
+
+    <!--配置自定义别名-->
+    <typeAliases>
+        <!--包扫描方式配置别名-->
+        <package name="com.mypro.ssm.po"/>
+    </typeAliases>
+
+    <!--配置插件-->
+    <plugins>
+        <!-- com.github.pagehelper为PageHelper类所在包名 -->
+        <plugin interceptor="com.github.pagehelper.PageInterceptor">
+            <!-- 配置相关参数，通常情况使用默认值即可，不需要配置-->
+            <!--配置指定当前使用的数据库-->
+            <property name="helperDialect" value="mysql"/>
+        </plugin>
+    </plugins>
+</configuration>

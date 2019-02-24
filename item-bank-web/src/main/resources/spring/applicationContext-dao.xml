@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+       http://www.springframework.org/schema/beans/spring-beans.xsd
+       http://www.springframework.org/schema/context
+       http://www.springframework.org/schema/context/spring-context.xsd">
+
+    <!--加载db.properties-->
+    <context:property-placeholder location="classpath:db.properties"/>
+
+    <!--配置数据源对象-->
+    <bean id="dataSource" class="com.alibaba.druid.pool.DruidDataSource">
+        <!--注入连接数据库的四个基本要素-->
+        <property name="driverClassName" value="${db.driver}"/>
+        <property name="url" value="${db.url}"/>
+        <property name="username" value="${db.username}"/>
+        <property name="password" value="${db.password}"/>
+    </bean>
+
+    <!--配置SqlSessionFactory-->
+    <bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+        <!--注入数据源对象-->
+        <property name="dataSource" ref="dataSource"/>
+        <!--加载sqlMapConfig.xml-->
+        <property name="configLocation" value="classpath:mybatis/sqlMapConfig.xml"/>
+    </bean>
+
+    <!--配置mapper扫描器-->
+    <bean class="tk.mybatis.spring.mapper.MapperScannerConfigurer">
+        <!--配置要扫描的包，说明：
+            1.如果有多个包，在同一个父包下，配置父包即可
+            2.如果不在同一个父包，以半角逗号进行分割
+        -->
+        <property name="basePackage" value="com.mypro.ssm.mapper"/>
+    </bean>
+
+</beans>
+
