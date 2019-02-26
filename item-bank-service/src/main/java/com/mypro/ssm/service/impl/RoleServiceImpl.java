@@ -1,5 +1,9 @@
 package com.mypro.ssm.service.impl;
 
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
+import com.mypro.ssm.mapper.RoleMapper;
+import com.mypro.ssm.po.rbac.Role;
 import com.mypro.ssm.service.RoleService;
 import org.springframework.stereotype.Service;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -116,5 +120,25 @@ public class RoleServiceImpl implements RoleService {
     @Override
     public List<Role> findById(Long id){
         return roleMapper.findById(id);
+    }
+
+    @Override
+    public PageInfo<Role> page(Integer pageNum, Integer pageSize) {
+        PageHelper.startPage(pageNum,pageSize);
+        List<Role> roles = findAll();
+        return new PageInfo<>(roles);
+    }
+
+    @Override
+    public Role findRolePermissions(Long id) {
+        return roleMapper.findRolePermissions(id);
+    }
+
+    @Override
+    public void updateRolePermission(Long roleId, Long[] permissionIds) {
+        roleMapper.deleteRolePermission(roleId);
+        for(Long permissionId: permissionIds){
+            roleMapper.insertRolePermission(roleId,permissionId);
+        }
     }
 }

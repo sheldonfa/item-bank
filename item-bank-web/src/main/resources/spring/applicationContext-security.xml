@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:security="http://www.springframework.org/schema/security"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+       http://www.springframework.org/schema/beans/spring-beans.xsd
+       http://www.springframework.org/schema/security
+       http://www.springframework.org/schema/security/spring-security.xsd">
+
+    <bean id="defaultUserDetailService" class="com.mypro.ssm.security.DefaultUserDetailsService"></bean>
+
+    <!--配置用户信息相关：认证-->
+    <security:authentication-manager>
+        <security:authentication-provider user-service-ref="defaultUserDetailService">
+        </security:authentication-provider>
+    </security:authentication-manager>
+
+    <!--配置http请求相关：授权，说明：
+        auto-config：开启自动配置
+        use-expressions：开启使用SpEL表达式
+    -->
+    <security:http auto-config="true" use-expressions="true">
+        <!--配置权限拦截url规则，说明：
+               pattern：url匹配模式
+               access：可访问角色列表
+           -->
+        <!--系统管理模块，要求要管理员-->
+        <security:intercept-url pattern="/user/**" access="hasRole('ROLE_ADMIN')"></security:intercept-url>
+        <security:intercept-url pattern="/role/**" access="hasRole('ROLE_ADMIN')"></security:intercept-url>
+        <security:intercept-url pattern="/permission/**" access="hasRole('ROLE_ADMIN')"></security:intercept-url>
+        <security:intercept-url pattern="/syslog/**" access="hasRole('ROLE_ADMIN')"></security:intercept-url>
+
+        <!--基础数据模块，普通用户和管理员都可以访问-->
+        <security:intercept-url pattern="/question/**" access="hasAnyRole('ROLE_USER','ROLE_ADMIN')"></security:intercept-url>
+        <security:intercept-url pattern="/category/**" access="hasAnyRole('ROLE_USER','ROLE_ADMIN')"></security:intercept-url>
+
+        <!--配置登录表单，说明：
+            login-page：登录页面
+            default-target-url：成功登录跳转地址
+            authentication-failure-url：登录失败跳转页面
+        -->
+        <security:form-login login-page="/login.jsp"
+                             default-target-url="/index.jsp" authentication-failure-url="/failer.jsp"></security:form-login>
+
+        <!--配置退出，说明：
+            logout-success-url：成功退出后跳转地址
+            invalidate-session：销毁session
+        -->
+        <security:logout logout-url="/logout" logout-success-url="/login.jsp" invalidate-session="true"></security:logout>
+
+        <!--关闭伪造表单请求-->
+        <security:csrf disabled="true"></security:csrf>
+
+        <!--配置403禁止访问页面-->
+        <security:access-denied-handler error-page="/403.jsp"></security:access-denied-handler>
+    </security:http>
+
+</beans>

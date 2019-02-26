@@ -2,6 +2,7 @@ package com.mypro.ssm.mapper;
 
 import com.mypro.ssm.mapper.UserMapper;
 import com.mypro.ssm.po.User;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
@@ -81,4 +82,21 @@ public interface UserMapper{
      * @date 2019-2-25
      */
     List<User> findById(Long id);
+
+    /**
+     * 关联查询用户角色
+     * @return
+     */
+    List<User> findUserRoles();
+
+    /**
+     * 根据id关联查询
+     * @param id
+     * @return
+     */
+    User findUserRolesPermissionsById(Long id);
+
+    void deleteUserAndRole(@Param("userId") Long userId);
+
+    void insertUserAndRole(@Param("userId") Long userId,@Param("roleId") Long roleId);
 }

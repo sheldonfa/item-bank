@@ -1,5 +1,7 @@
 package com.mypro.ssm.service.impl;
 
+import com.mypro.ssm.mapper.RolePermissionMapper;
+import com.mypro.ssm.po.rbac.RolePermission;
 import com.mypro.ssm.service.RolePermissionService;
 import org.springframework.stereotype.Service;
 import org.springframework.beans.factory.annotation.Autowired;

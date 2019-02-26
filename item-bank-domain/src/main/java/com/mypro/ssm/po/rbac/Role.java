@@ -1,59 +1,69 @@
 package com.mypro.ssm.po.rbac;
 
 
+import java.io.Serializable;
+import java.util.List;
+
 /**
  * POJO:Role
- * 
+ *
  * @author fangxin
  * @date 2019-2-25
  */
 public class Role implements Serializable {
-	
-	private Integer	id;		
-	private String	roleName;		
-	private String	roleDesc;		
 
-	// Constructor
-	public Role() {
-	}
-	
-	/**
-	 * full Constructor
-	 */
-	public Role(Integer id, String roleName, String roleDesc) {
-		this.id = id;
-		this.roleName = roleName;
-		this.roleDesc = roleDesc;
-	}
+    private Long id;
+    private String roleName;
+    private String roleDesc;
+    private List<Permission> permissions;
+    //页面字符，是否选中
+    private Integer checked;
 
-	// getter && setter
-	// 在setter方法最后加上"return this;"并把返回参数改为Role可以实现连缀设置属性
-	public Integer getId() {
-		return id;
-	}
+    public Role() {
+    }
 
-	public void setId(Integer id) {
-		this.id = id;
-	}
+    public Integer getChecked() {
+        return checked;
+    }
 
-	public String getRoleName() {
-		return roleName;
-	}
+    public void setChecked(Integer checked) {
+        this.checked = checked;
+    }
 
-	public void setRoleName(String roleName) {
-		this.roleName = roleName;
-	}
+    public List<Permission> getPermissions() {
+        return permissions;
+    }
 
-	public String getRoleDesc() {
-		return roleDesc;
-	}
+    public void setPermissions(List<Permission> permissions) {
+        this.permissions = permissions;
+    }
 
-	public void setRoleDesc(String roleDesc) {
-		this.roleDesc = roleDesc;
-	}
+    public Long getId() {
+        return id;
+    }
 
-	@Override
-	public String toString() {
-		return "Role [" + "id=" + id + ", roleName=" + roleName + ", roleDesc=" + roleDesc +  "]";
-	}
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public String getRoleName() {
+        return roleName;
+    }
+
+    public void setRoleName(String roleName) {
+        this.roleName = roleName;
+    }
+
+    public String getRoleDesc() {
+        return roleDesc;
+    }
+
+    public void setRoleDesc(String roleDesc) {
+        this.roleDesc = roleDesc;
+    }
+
+    @Override
+    public String toString() {
+        return "Role [" + "id=" + id + ", roleName=" + roleName + ", roleDesc=" + roleDesc + "]";
+    }
 }

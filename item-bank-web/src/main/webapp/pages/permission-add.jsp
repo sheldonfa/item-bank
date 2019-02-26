@@ -1,39 +1,20 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-	pageEncoding="UTF-8"%>
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+
+<!DOCTYPE html>
 <html>
-	<head>
-		<!-- 页面meta -->
-		<meta charset="utf-8">
-		<meta http-equiv="X-UA-Compatible" content="IE=edge">
-		<title>数据后台管理 - 权限</title>
-		<meta name="description" content="权限">
-		<meta name="keywords" content="权限">
+<head>
+	<jsp:include page="common/css.jsp"/>
+</head>
+<body class="hold-transition skin-purple sidebar-mini">
+<div class="wrapper">
+	<jsp:include page="common/header.jsp"/>
+	<jsp:include page="common/aside.jsp"/>
+	<!-- 内容区域 -->
+	<div class="content-wrapper">
 
-		<!-- Tell the browser to be responsive to screen width -->
-		<meta content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no" name="viewport">
-
-		<!-- 引入css -->
-		<jsp:include page="common/css.jsp"></jsp:include>
-		<!-- 引入css /-->
-	</head>
-
-	<body class="hold-transition skin-purple sidebar-mini" style="overflow:scroll;overflow-x:hidden">
-
-	<div class="wrapper">
-
-		<!-- 页面头部 -->
-		<jsp:include page="common/header.jsp"></jsp:include>
-		<!-- 页面头部 /-->
-		<!-- 导航侧栏 -->
-		<jsp:include page="common/aside.jsp"></jsp:include>
-		<!-- 导航侧栏 /-->
-
-		<!-- 内容区域 -->
-		<div class="content-wrapper">
-
-			<!-- 内容头部 -->
-			<section class="content-header">
+		<!-- 内容头部 -->
+		<section class="content-header">
 			<h1>
 				权限资源管理 <small>权限资源表单</small>
 			</h1>
@@ -43,13 +24,13 @@
 				<li><a href="${pageContext.request.contextPath}/permission/list/1/5">权限资源管理</a></li>
 				<li class="active">权限资源表单</li>
 			</ol>
-			</section>
-			<!-- 内容头部 /-->
+		</section>
+		<!-- 内容头部 /-->
 
-			<form action="${pageContext.request.contextPath}/permission/save"
-				method="post">
-				<!-- 正文区域 -->
-				<section class="content"> <!--产品信息-->
+		<form action="${pageContext.request.contextPath}/permission"
+			  method="post">
+			<!-- 正文区域 -->
+			<section class="content"> <!--产品信息-->
 
 				<div class="panel panel-default">
 					<div class="panel-heading">权限资源信息</div>
@@ -58,14 +39,14 @@
 						<div class="col-md-2 title">权限资源名称</div>
 						<div class="col-md-4 data">
 							<input type="text" class="form-control" name="permissionName"
-								placeholder="权限资源名称" value=""/>
+								   placeholder="权限资源名称" value=""/>
 						</div>
 						<div class="col-md-2 title">权限资源URL</div>
 						<div class="col-md-4 data">
 							<input type="text" class="form-control" name="url"
-								placeholder="url" value=""/>
+								   placeholder="url" value=""/>
 						</div>
-										
+
 
 					</div>
 				</div>
@@ -73,21 +54,17 @@
 				<div class="box-tools text-center">
 					<button type="submit" class="btn bg-maroon">保存</button>
 					<button type="button" class="btn bg-default"
-						onclick="history.back(-1);">返回</button>
+							onclick="history.back(-1);">返回</button>
 				</div>
 				<!--工具栏/--> </section>
-				<!-- 正文区域 /-->
-			</form>
-		</div>
-		<!-- 内容区域 /-->
-
-		<!-- 底部导航 -->
-		<jsp:include page="common/footer.jsp"></jsp:include>
-		<!-- 底部导航 /-->
-
+			<!-- 正文区域 /-->
+		</form>
 	</div>
+	<!-- 内容区域 /-->
+	<jsp:include page="common/footer.jsp"/>
+</div>
+<jsp:include page="common/script.jsp"/>
+<script>
+</script>
 </body>
-	<!-- 引入js -->
-	<jsp:include page="common/js.jsp"></jsp:include>
-	<!-- 引入js /-->
 </html>

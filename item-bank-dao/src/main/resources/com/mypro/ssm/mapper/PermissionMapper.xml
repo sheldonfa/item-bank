@@ -3,13 +3,13 @@
 <mapper namespace="com.mypro.ssm.mapper.PermissionMapper">
 	<resultMap id="permissionResultMap" type="permission">
 		<result property="id" column="id" />
-		<result property="permissionName" column="permissionName" />
+		<result property="permissionName" column="permission_name" />
 		<result property="url" column="url" />
 	</resultMap>
 	
 	<sql id="table_columns">
 		`id`,
-		`permissionName`,
+		`permission_name`,
 		`url`
     </sql>
 
@@ -22,7 +22,7 @@
     <!--条件查询-->
     <sql id="where">
         <where>
-            	<if test="permissionName != null and permissionName != ''">and permissionName = #{permissionName}</if>
+            	<if test="permissionName != null and permissionName != ''">and permission_name = #{permissionName}</if>
             	<if test="url != null and url != ''">and url = #{url}</if>
         </where>
     </sql>
@@ -39,8 +39,8 @@
 			 <if test="id != null">
 				id,
 			 </if>
-			 <if test="permissionName != null">
-				permissionName,
+			 <if test="permission_name != null">
+				permission_name,
 			 </if>
 			 <if test="url != null">
 				url,
@@ -51,8 +51,8 @@
             <if test="id != null">
                 #{id}
             </if>
-            <if test="permissionName != null">
-                #{permissionName}
+            <if test="permission_name != null">
+                #{permission_name}
             </if>
             <if test="url != null">
                 #{url}
@@ -81,7 +81,7 @@
 	<update id="update" parameterType="permission">
 		update `permission` 
 		<trim prefix="set" suffixOverrides=",">
-			<if test="permissionName != null and permissionName != ''">permissionName = #{permissionName},</if>
+			<if test="permissionName != null and permissionName != ''">permission_name = #{permissionName},</if>
 			<if test="url != null and url != ''">url = #{url},</if>
 		</trim>
 		<where>id = #{id}</where>

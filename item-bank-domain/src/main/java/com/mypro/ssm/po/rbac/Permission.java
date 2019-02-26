@@ -1,59 +1,60 @@
 package com.mypro.ssm.po.rbac;
 
 
+import java.io.Serializable;
+
 /**
  * POJO:Permission
- * 
+ *
  * @author fangxin
  * @date 2019-2-25
  */
 public class Permission implements Serializable {
-	
-	private Integer	id;		
-	private String	permissionName;		 /* 权限名称 */ 
-	private String	url;		 /* 资源路径 */ 
 
-	// Constructor
-	public Permission() {
-	}
-	
-	/**
-	 * full Constructor
-	 */
-	public Permission(Integer id, String permissionName, String url) {
-		this.id = id;
-		this.permissionName = permissionName;
-		this.url = url;
-	}
+    private Long id;
+    private String permissionName;
+    private String url;
 
-	// getter && setter
-	// 在setter方法最后加上"return this;"并把返回参数改为Permission可以实现连缀设置属性
-	public Integer getId() {
-		return id;
-	}
+    private Integer checked;
 
-	public void setId(Integer id) {
-		this.id = id;
-	}
+    // Constructor
+    public Permission() {
+    }
 
-	public String getPermissionName() {
-		return permissionName;
-	}
+    public Long getId() {
+        return id;
+    }
 
-	public void setPermissionName(String permissionName) {
-		this.permissionName = permissionName;
-	}
+    public void setId(Long id) {
+        this.id = id;
+    }
 
-	public String getUrl() {
-		return url;
-	}
+    public String getPermissionName() {
+        return permissionName;
+    }
 
-	public void setUrl(String url) {
-		this.url = url;
-	}
+    public void setPermissionName(String permissionName) {
+        this.permissionName = permissionName;
+    }
 
-	@Override
-	public String toString() {
-		return "Permission [" + "id=" + id + ", permissionName=" + permissionName + ", url=" + url +  "]";
-	}
+    public String getUrl() {
+        return url;
+    }
+
+    public void setUrl(String url) {
+        this.url = url;
+    }
+
+    public Integer getChecked() {
+        return checked;
+    }
+
+    public void setChecked(Integer checked) {
+        this.checked = checked;
+    }
+
+    @Override
+    public String toString() {
+        return "Permission [" + "id=" + id + ", permissionName=" + permissionName + ", url=" + url + "]";
+    }
 }

@@ -1,5 +1,6 @@
 package com.mypro.ssm.service;
 
+import com.github.pagehelper.PageInfo;
 import com.mypro.ssm.po.rbac.Role;
 import com.mypro.ssm.service.RoleService;
 import java.util.List;
@@ -80,4 +81,10 @@ public interface RoleService{
      * @date 2019-2-25
      */
     List<Role> findById(Long id);
+
+    PageInfo<Role> page(Integer pageNum, Integer pageSize);
+
+    Role findRolePermissions(Long id);
+
+    void updateRolePermission(Long roleId, Long[] ids);
 }

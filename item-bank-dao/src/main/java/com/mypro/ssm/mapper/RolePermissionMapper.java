@@ -66,7 +66,7 @@ public interface RolePermissionMapper{
      * @author fangxin
      * @date 2019-2-25
      */
-    List<RolePermission> findAll(RolePermission rolePermission);
+    List<RolePermission> findAll();
 
     /**
      * 查询数量

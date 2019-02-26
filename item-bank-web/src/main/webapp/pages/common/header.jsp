@@ -231,7 +231,7 @@
                             <img src="../../img/user2-160x160.jpg" class="img-circle" alt="User Image">
 
                             <p>
-                                张猿猿 - 数据管理员
+                                方树林 - 数据管理员
                                 <small>最后登录 11:20AM</small>
                             </p>
                         </li>
@@ -255,7 +255,7 @@
                                 <a href="#" class="btn btn-default btn-flat">修改密码</a>
                             </div>
                             <div class="pull-right">
-                                <a href="#" class="btn btn-default btn-flat">注销</a>
+                                <a href="/logout" class="btn btn-default btn-flat">注销</a>
                             </div>
                         </li>
                     </ul>

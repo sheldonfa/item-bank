@@ -1,7 +1,16 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
-<%@ taglib prefix="ot" tagdir="/WEB-INF/tags" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<ot:main title="腾讯首页">
+
+<!DOCTYPE html>
+<html>
+<head>
+    <jsp:include page="common/css.jsp"/>
+</head>
+<body class="hold-transition skin-purple sidebar-mini">
+<div class="wrapper">
+    <jsp:include page="common/header.jsp"/>
+    <jsp:include page="common/aside.jsp"/>
+    <!--页面内容-->
     <div class="content-wrapper">
 
         <!-- 内容头部 -->
@@ -69,4 +78,40 @@
         <!-- /.content -->
     </div>
     <!-- /.content-wrapper -->
-</ot:main>
+    <!-- /.页面内容 -->
+    <jsp:include page="common/footer.jsp"/>
+</div>
+<jsp:include page="common/script.jsp"/>
+<script>
+    $(function () {
+        markdowntohtml()
+
+        $(".btn-edit-js").click(function () {
+            var id = $($(this).parents(".box")[0]).attr("id");
+            window.location.href = "${pageContext.request.contextPath}/question/list_edit/" + id;
+        })
+
+        /*删除按钮*/
+        $(function () {
+            $(".btn-delete-js").click(function () {
+                if(confirm("确定要删除吗？")){
+                    $.post("/question/del/"+$(this).attr("id"),function (result) {
+                        if(result["code"]==0){
+                            window.location.href = "/question/list";
+                        }
+                    });
+                }
+            })
+        })
+    });
+
+    function markdowntohtml() {
+        var converter = new showdown.Converter()
+        $(".question-md").each(function () {
+            $(this).html(converter.makeHtml($.trim($(this).html())))
+        });
+    }
+
+</script>
+</body>
+</html>

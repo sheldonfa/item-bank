@@ -68,4 +68,26 @@
             liObj.addClass("active");
         }
     }
+
+    // 添加
+    function add(url){
+        window.location.href="${pageContext.request.contextPath}/"+url;
+    }
+    // 编辑
+    function edit(url){
+        window.location.href="${pageContext.request.contextPath}/"+url;
+    }
+
+    // 查看
+    function show(url){
+        window.location.href="${pageContext.request.contextPath}/"+url;
+    }
+
+    // 删除
+    function del(url){
+        if(confirm("确定要删除吗？")){
+            window.location.href="${pageContext.request.contextPath}/"+url;
+        }
+
+    }
 </script>

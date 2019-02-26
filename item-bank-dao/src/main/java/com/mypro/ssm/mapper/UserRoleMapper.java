@@ -66,7 +66,7 @@ public interface UserRoleMapper{
      * @author fangxin
      * @date 2019-2-25
      */
-    List<UserRole> findAll(UserRole userRole);
+    List<UserRole> findAll();
 
     /**
      * 查询数量

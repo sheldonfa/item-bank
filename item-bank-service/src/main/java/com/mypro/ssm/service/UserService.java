@@ -1,5 +1,6 @@
 package com.mypro.ssm.service;
 
+import com.github.pagehelper.PageInfo;
 import com.mypro.ssm.po.User;
 import com.mypro.ssm.service.UserService;
 import java.util.List;
@@ -80,4 +81,24 @@ public interface UserService{
      * @date 2019-2-25
      */
     List<User> findById(Long id);
+
+    /**
+     * 显示
+     */
+    List<User> findUserRoles();
+
+    /**
+     * 显示
+     */
+    User findUserRoles(Long id);
+
+    /**
+     * 分页查询
+     * @param pageNum
+     * @param pageSize
+     * @return
+     */
+    PageInfo<User> page(Integer pageNum, Integer pageSize);
+
+    void updateUserRole(Long userId, Long[] ids);
 }

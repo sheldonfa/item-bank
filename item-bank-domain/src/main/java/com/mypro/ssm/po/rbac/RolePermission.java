@@ -1,6 +1,8 @@
 package com.mypro.ssm.po.rbac;
 
 
+import java.io.Serializable;
+
 /**
  * POJO:RolePermission
  * 
@@ -9,41 +11,34 @@ package com.mypro.ssm.po.rbac;
  */
 public class RolePermission implements Serializable {
 	
-	private Integer	roleId;		
-	private Integer	permissionId;		
+	private Long	roleId;
+	private Long	permissionId;
 
 	// Constructor
 	public RolePermission() {
 	}
-	
-	/**
-	 * full Constructor
-	 */
-	public RolePermission(Integer roleId, Integer permissionId) {
-		this.roleId = roleId;
-		this.permissionId = permissionId;
-	}
 
-	// getter && setter
-	// 在setter方法最后加上"return this;"并把返回参数改为RolePermission可以实现连缀设置属性
-	public Integer getRoleId() {
+	public Long getRoleId() {
 		return roleId;
 	}
 
-	public void setRoleId(Integer roleId) {
+	public void setRoleId(Long roleId) {
 		this.roleId = roleId;
 	}
 
-	public Integer getPermissionId() {
+	public Long getPermissionId() {
 		return permissionId;
 	}
 
-	public void setPermissionId(Integer permissionId) {
+	public void setPermissionId(Long permissionId) {
 		this.permissionId = permissionId;
 	}
 
 	@Override
 	public String toString() {
-		return "RolePermission [" + "roleId=" + roleId + ", permissionId=" + permissionId +  "]";
+		return "RolePermission{" +
+				"roleId=" + roleId +
+				", permissionId=" + permissionId +
+				'}';
 	}
 }

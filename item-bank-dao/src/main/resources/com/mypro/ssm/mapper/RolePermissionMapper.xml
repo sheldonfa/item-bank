@@ -2,13 +2,13 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.mypro.ssm.mapper.RolePermissionMapper">
 	<resultMap id="rolePermissionResultMap" type="rolePermission">
-		<result property="roleId" column="roleId" />
-		<result property="permissionId" column="permissionId" />
+		<result property="roleId" column="role_id" />
+		<result property="permissionId" column="permission_id" />
 	</resultMap>
 	
 	<sql id="table_columns">
-		`roleId`,
-		`permissionId`
+		`role_id`,
+		`permission_id`
     </sql>
 
     <sql id="entity_properties">
@@ -19,7 +19,7 @@
     <!--条件查询-->
     <sql id="where">
         <where>
-            	<if test="permissionId != null and permissionId != ''">and permissionId = #{permissionId}</if>
+            	<if test="permissionId != null and permissionId != ''">and permission_id = #{permissionId}</if>
         </where>
     </sql>
 
@@ -32,20 +32,20 @@
     <insert id="insertSelective" parameterType="rolePermission" useGeneratedKeys="true" keyProperty="id">
         insert into `role_permission`
         <trim prefix="(" suffix=")" suffixOverrides=",">
-			 <if test="roleId != null">
-				roleId,
+			 <if test="role_id != null">
+				role_id,
 			 </if>
-			 <if test="permissionId != null">
-				permissionId,
+			 <if test="permission_id != null">
+				permission_id,
 			 </if>
         </trim>
         values
         <trim prefix="(" suffix=")" suffixOverrides=",">
-            <if test="roleId != null">
-                #{roleId}
+            <if test="role_id != null">
+                #{role_id}
             </if>
-            <if test="permissionId != null">
-                #{permissionId}
+            <if test="permission_id != null">
+                #{permission_id}
             </if>
         </trim>
     </insert>
@@ -71,7 +71,7 @@
 	<update id="update" parameterType="rolePermission">
 		update `role_permission` 
 		<trim prefix="set" suffixOverrides=",">
-			<if test="permissionId != null and permissionId != ''">permissionId = #{permissionId},</if>
+			<if test="permissionId != null and permissionId != ''">permission_id = #{permissionId},</if>
 		</trim>
 		<where>id = #{id}</where>
 	</update>
