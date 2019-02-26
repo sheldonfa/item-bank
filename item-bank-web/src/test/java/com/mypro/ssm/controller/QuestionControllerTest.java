@@ -6,12 +6,9 @@ import com.mypro.ssm.service.QuestionService;
 import com.mypro.ssm.util.DateUtils;
 import org.junit.Assert;
 import org.junit.Before;
-import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.support.ClassPathXmlApplicationContext;
-import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
@@ -32,7 +29,7 @@ public class QuestionControllerTest {
         questionMapper.deleteAll();
         // Setup初始化数据
         for (int i = 0; i < 24; i++) {
-            Question question = new Question(1, "asdf", 1, DateUtils.stringToDate("2019-02-04 10:00:00", "yyyy-MM-dd HH:mm:ss"));
+            Question question = new Question(1L, "asdf", 1, DateUtils.stringToDate("2019-02-04 10:00:00", "yyyy-MM-dd HH:mm:ss"));
             questionService.add(question);
         }
     }
@@ -46,7 +43,7 @@ public class QuestionControllerTest {
     @Test
     public void testAdd() {
         Question question = new Question();
-        question.setCategoryId(1);
+        question.setCategoryId(1L);
         question.setContent("adsfds");
         questionService.add(question);
     }

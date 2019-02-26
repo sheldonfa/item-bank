@@ -1,30 +1,30 @@
 package com.mypro.ssm.mapper;
 
-import com.mypro.ssm.mapper.UserMapper;
-import com.mypro.ssm.po.User;
+import com.mypro.ssm.mapper.RoleMapper;
+import com.mypro.ssm.po.rbac.Role;
 
 import java.util.List;
 
 /**
- * Mapper Interface:User
+ * Mapper Interface:Role
  * @author fangxin
  * @date 2019-2-25
  */
 
-public interface UserMapper{
+public interface RoleMapper{
     /**
      * 添加
      * @author fangxin
      * @date 2019-2-25
      */
-    Integer insert(User user);
+    Integer insert(Role role);
 
     /**
      * 选择性添加
      * @author fangxin
      * @date 2019-2-25
      */
-    Integer insertSelective(User user);
+    Integer insertSelective(Role role);
 
     /**
      * 根据主键删除
@@ -45,40 +45,40 @@ public interface UserMapper{
      * @author fangxin
      * @date 2019-2-25
      */
-    Integer delete(User user);
+    Integer delete(Role role);
 
     /**
      * 更新
      * @author fangxin
      * @date 2019-2-25
      */
-    Integer update(User user);
+    Integer update(Role role);
 
     /**
      * 查询
      * @author fangxin
      * @date 2019-2-25
      */
-	List<User> find(User user);
+	List<Role> find(Role role);
 
     /**
      * 查询全部
      * @author fangxin
      * @date 2019-2-25
      */
-    List<User> findAll();
+    List<Role> findAll(Role role);
 
     /**
      * 查询数量
      * @author fangxin
      * @date 2019-2-25
      */
-    Long findCount(User user);
+    Long findCount(Role role);
 
     /**
      * 根据主键查询
      * @author fangxin
      * @date 2019-2-25
      */
-    List<User> findById(Long id);
+    List<Role> findById(Long id);
 }

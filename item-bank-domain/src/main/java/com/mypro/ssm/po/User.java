@@ -1,5 +1,9 @@
 package com.mypro.ssm.po;
 
+import com.mypro.ssm.po.rbac.Role;
+
+import java.util.List;
+
 public class User {
     private Long id;
     private String username;
@@ -7,6 +11,15 @@ public class User {
     private String email;
     private String phoneNum;
     private Integer status;
+    private List<Role> roles;
+
+    public List<Role> getRoles() {
+        return roles;
+    }
+
+    public void setRoles(List<Role> roles) {
+        this.roles = roles;
+    }
 
     public Long getId() {
         return id;
@@ -54,5 +67,18 @@ public class User {
 
     public void setStatus(Integer status) {
         this.status = status;
+    }
+
+    @Override
+    public String toString() {
+        return "User{" +
+                "id=" + id +
+                ", username='" + username + '\'' +
+                ", password='" + password + '\'' +
+                ", email='" + email + '\'' +
+                ", phoneNum='" + phoneNum + '\'' +
+                ", status=" + status +
+                ", roles=" + roles +
+                '}';
     }
 }

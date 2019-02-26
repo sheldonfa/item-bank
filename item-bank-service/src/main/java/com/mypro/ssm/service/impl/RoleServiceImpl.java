@@ -1,24 +1,21 @@
 package com.mypro.ssm.service.impl;
 
-import com.mypro.ssm.mapper.UserMapper;
-import com.mypro.ssm.po.User;
-import com.mypro.ssm.service.UserService;
+import com.mypro.ssm.service.RoleService;
 import org.springframework.stereotype.Service;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import com.mypro.ssm.service.impl.UserServiceImpl;
 import java.util.List;
 
 /**
- * Service Implementation:User
+ * Service Implementation:Role
  * @author fangxin
  * @date 2019-2-25
  */
 @Service
-public class UserServiceImpl implements UserService {
+public class RoleServiceImpl implements RoleService {
 
     @Autowired
-    private UserMapper userMapper;
+    private RoleMapper roleMapper;
 
 
     /**
@@ -27,8 +24,8 @@ public class UserServiceImpl implements UserService {
      * @date 2019-2-25
      */
     @Override
-    public Integer insert(User user){
-        return userMapper.insert(user);
+    public Integer insert(Role role){
+        return roleMapper.insert(role);
     }
 
     /**
@@ -37,8 +34,8 @@ public class UserServiceImpl implements UserService {
      * @date 2019-2-25
      */
     @Override
-    public Integer insertSelective(User user){
-        return userMapper.insertSelective(user);
+    public Integer insertSelective(Role role){
+        return roleMapper.insertSelective(role);
     }
 
     /**
@@ -48,7 +45,7 @@ public class UserServiceImpl implements UserService {
      */
     @Override
     public Integer deleteById(Long id){
-        return userMapper.deleteById(id);
+        return roleMapper.deleteById(id);
     }
 
     /**
@@ -58,7 +55,7 @@ public class UserServiceImpl implements UserService {
      */
     @Override
     public Integer deleteByIds(Long[] ids){
-        return userMapper.deleteByIds(ids);
+        return roleMapper.deleteByIds(ids);
     }
 
     /**
@@ -67,8 +64,8 @@ public class UserServiceImpl implements UserService {
      * @date 2019-2-25
      */
     @Override
-    public Integer delete(User user){
-        return userMapper.delete(user);
+    public Integer delete(Role role){
+        return roleMapper.delete(role);
     }
 
     /**
@@ -77,8 +74,8 @@ public class UserServiceImpl implements UserService {
      * @date 2019-2-25
      */
     @Override
-    public Integer update(User user){
-        return userMapper.update(user);
+    public Integer update(Role role){
+        return roleMapper.update(role);
     }
 
     /**
@@ -87,8 +84,8 @@ public class UserServiceImpl implements UserService {
      * @date 2019-2-25
      */
     @Override
-	public List<User> find(User user){
-        return userMapper.find(user);
+	public List<Role> find(Role role){
+        return roleMapper.find(role);
     }
 
     /**
@@ -97,8 +94,8 @@ public class UserServiceImpl implements UserService {
      * @date 2019-2-25
      */
     @Override
-    public List<User> findAll(){
-        return userMapper.findAll();
+    public List<Role> findAll(){
+        return roleMapper.findAll();
     }
 
     /**
@@ -107,8 +104,8 @@ public class UserServiceImpl implements UserService {
      * @date 2019-2-25
      */
     @Override
-    public Long findCount(User user){
-        return userMapper.findCount(user);
+    public Long findCount(Role role){
+        return roleMapper.findCount(role);
     }
 
     /**
@@ -117,7 +114,7 @@ public class UserServiceImpl implements UserService {
      * @date 2019-2-25
      */
     @Override
-    public List<User> findById(Long id){
-        return userMapper.findById(id);
+    public List<Role> findById(Long id){
+        return roleMapper.findById(id);
     }
 }

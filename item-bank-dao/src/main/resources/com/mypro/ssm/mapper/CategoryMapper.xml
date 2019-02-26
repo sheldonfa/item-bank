@@ -3,7 +3,13 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.mypro.ssm.mapper.CategoryMapper">
+    <insert id="addUseKey" useGeneratedKeys="true" parameterType="category" keyColumn="id" keyProperty="id">
+        INSERT INTO `category`(parent_id,name) VALUES (#{parentId},#{name})
+    </insert>
 
 
+    <delete id="deleteAll">
+        DELETE FROM `category`
+    </delete>
 </mapper>
 

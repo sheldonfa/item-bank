@@ -8,7 +8,7 @@ public class Question {
     @Id
     @GeneratedValue(generator = "JDBC")
     private Long id;
-    private Integer categoryId;
+    private Long categoryId;
     private String content;
     private Integer stage;
     private Date lastReviewTime;
@@ -20,7 +20,7 @@ public class Question {
     public Question() {
     }
 
-    public Question(Integer categoryId, String content, Integer stage, Date lastReviewTime) {
+    public Question(Long categoryId, String content, Integer stage, Date lastReviewTime) {
         this.categoryId = categoryId;
         this.content = content;
         this.stage = stage;
@@ -35,11 +35,11 @@ public class Question {
         this.id = id;
     }
 
-    public Integer getCategoryId() {
+    public Long getCategoryId() {
         return categoryId;
     }
 
-    public void setCategoryId(Integer type) {
+    public void setCategoryId(Long type) {
         this.categoryId = type;
     }
 

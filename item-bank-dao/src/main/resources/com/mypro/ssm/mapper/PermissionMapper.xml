@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.mypro.ssm.mapper.PermissionMapper">
+	<resultMap id="permissionResultMap" type="permission">
+		<result property="id" column="id" />
+		<result property="permissionName" column="permissionName" />
+		<result property="url" column="url" />
+	</resultMap>
+	
+	<sql id="table_columns">
+		`id`,
+		`permissionName`,
+		`url`
+    </sql>
+
+    <sql id="entity_properties">
+			#{id},
+			#{permissionName},
+			#{url}
+    </sql>
+
+    <!--条件查询-->
+    <sql id="where">
+        <where>
+            	<if test="permissionName != null and permissionName != ''">and permissionName = #{permissionName}</if>
+            	<if test="url != null and url != ''">and url = #{url}</if>
+        </where>
+    </sql>
+
+	<!-- 适用于主键自增类型 -->
+	<insert id="insert" parameterType="permission" useGeneratedKeys="true" keyProperty="id">
+		insert into `permission`( <include refid="table_columns" /> ) 
+		values ( <include refid="entity_properties" /> )
+	</insert>
+
+    <insert id="insertSelective" parameterType="permission" useGeneratedKeys="true" keyProperty="id">
+        insert into `permission`
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+			 <if test="id != null">
+				id,
+			 </if>
+			 <if test="permissionName != null">
+				permissionName,
+			 </if>
+			 <if test="url != null">
+				url,
+			 </if>
+        </trim>
+        values
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                #{id}
+            </if>
+            <if test="permissionName != null">
+                #{permissionName}
+            </if>
+            <if test="url != null">
+                #{url}
+            </if>
+        </trim>
+    </insert>
+
+    <delete id="deleteById" parameterType="int">
+        delete from `permission`
+        where id = #{id}
+    </delete>
+
+	<delete id="deleteByIds" parameterType="list">
+		delete from `permission`
+		where id in
+		<foreach item="item" collection="array" open="(" separator="," close=")">
+			#{item}
+		</foreach>
+	</delete>
+
+    <delete id="delete" parameterType="permission">
+        delete from `permission`
+        <include refid="where"/>
+    </delete>
+	
+	<update id="update" parameterType="permission">
+		update `permission` 
+		<trim prefix="set" suffixOverrides=",">
+			<if test="permissionName != null and permissionName != ''">permissionName = #{permissionName},</if>
+			<if test="url != null and url != ''">url = #{url},</if>
+		</trim>
+		<where>id = #{id}</where>
+	</update>
+
+    <select id="find" resultMap="permissionResultMap">
+        SELECT 	<include refid="table_columns"/>
+        FROM 	`permission`
+        <include refid="where"/>
+    </select>
+
+    <select id="findAll" resultMap="permissionResultMap">
+        select <include refid="table_columns" />
+        from `permission`
+    </select>
+
+    <select id="findCount" resultType="java.lang.Long">
+        SELECT 	count(1)
+        FROM 	`permission`
+        <include refid="where"/>
+    </select>
+
+    <select id="findById" resultMap="permissionResultMap" parameterType="int" >
+        select <include refid="table_columns" />
+        from `permission`
+        where id = #{id}
+    </select>
+
+    <!-- 其他自定义SQL -->
+</mapper>

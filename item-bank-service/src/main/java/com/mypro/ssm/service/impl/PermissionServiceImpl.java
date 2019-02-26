@@ -1,24 +1,23 @@
 package com.mypro.ssm.service.impl;
 
-import com.mypro.ssm.mapper.UserMapper;
-import com.mypro.ssm.po.User;
-import com.mypro.ssm.service.UserService;
+import com.mypro.ssm.mapper.PermissionMapper;
+import com.mypro.ssm.po.rbac.Permission;
+import com.mypro.ssm.service.PermissionService;
 import org.springframework.stereotype.Service;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import com.mypro.ssm.service.impl.UserServiceImpl;
 import java.util.List;
 
 /**
- * Service Implementation:User
+ * Service Implementation:Permission
  * @author fangxin
  * @date 2019-2-25
  */
 @Service
-public class UserServiceImpl implements UserService {
+public class PermissionServiceImpl implements PermissionService {
 
     @Autowired
-    private UserMapper userMapper;
+    private PermissionMapper permissionMapper;
 
 
     /**
@@ -27,8 +26,8 @@ public class UserServiceImpl implements UserService {
      * @date 2019-2-25
      */
     @Override
-    public Integer insert(User user){
-        return userMapper.insert(user);
+    public Integer insert(Permission permission){
+        return permissionMapper.insert(permission);
     }
 
     /**
@@ -37,8 +36,8 @@ public class UserServiceImpl implements UserService {
      * @date 2019-2-25
      */
     @Override
-    public Integer insertSelective(User user){
-        return userMapper.insertSelective(user);
+    public Integer insertSelective(Permission permission){
+        return permissionMapper.insertSelective(permission);
     }
 
     /**
@@ -48,7 +47,7 @@ public class UserServiceImpl implements UserService {
      */
     @Override
     public Integer deleteById(Long id){
-        return userMapper.deleteById(id);
+        return permissionMapper.deleteById(id);
     }
 
     /**
@@ -58,7 +57,7 @@ public class UserServiceImpl implements UserService {
      */
     @Override
     public Integer deleteByIds(Long[] ids){
-        return userMapper.deleteByIds(ids);
+        return permissionMapper.deleteByIds(ids);
     }
 
     /**
@@ -67,8 +66,8 @@ public class UserServiceImpl implements UserService {
      * @date 2019-2-25
      */
     @Override
-    public Integer delete(User user){
-        return userMapper.delete(user);
+    public Integer delete(Permission permission){
+        return permissionMapper.delete(permission);
     }
 
     /**
@@ -77,8 +76,8 @@ public class UserServiceImpl implements UserService {
      * @date 2019-2-25
      */
     @Override
-    public Integer update(User user){
-        return userMapper.update(user);
+    public Integer update(Permission permission){
+        return permissionMapper.update(permission);
     }
 
     /**
@@ -87,8 +86,8 @@ public class UserServiceImpl implements UserService {
      * @date 2019-2-25
      */
     @Override
-	public List<User> find(User user){
-        return userMapper.find(user);
+	public List<Permission> find(Permission permission){
+        return permissionMapper.find(permission);
     }
 
     /**
@@ -97,8 +96,8 @@ public class UserServiceImpl implements UserService {
      * @date 2019-2-25
      */
     @Override
-    public List<User> findAll(){
-        return userMapper.findAll();
+    public List<Permission> findAll(){
+        return permissionMapper.findAll();
     }
 
     /**
@@ -107,8 +106,8 @@ public class UserServiceImpl implements UserService {
      * @date 2019-2-25
      */
     @Override
-    public Long findCount(User user){
-        return userMapper.findCount(user);
+    public Long findCount(Permission permission){
+        return permissionMapper.findCount(permission);
     }
 
     /**
@@ -117,7 +116,7 @@ public class UserServiceImpl implements UserService {
      * @date 2019-2-25
      */
     @Override
-    public List<User> findById(Long id){
-        return userMapper.findById(id);
+    public List<Permission> findById(Long id){
+        return permissionMapper.findById(id);
     }
 }

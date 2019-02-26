@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.mypro.ssm.mapper.RoleMapper">
+	<resultMap id="roleResultMap" type="role">
+		<result property="id" column="id" />
+		<result property="roleName" column="role_name" />
+		<result property="roleDesc" column="role_desc" />
+	</resultMap>
+	
+	<sql id="table_columns">
+		`id`,
+		`role_name`,
+		`role_desc`
+    </sql>
+
+    <sql id="entity_properties">
+			#{id},
+			#{roleName},
+			#{roleDesc}
+    </sql>
+
+    <!--条件查询-->
+    <sql id="where">
+        <where>
+            	<if test="roleName != null and roleName != ''">and role_name = #{roleName}</if>
+            	<if test="roleDesc != null and roleDesc != ''">and role_desc = #{roleDesc}</if>
+        </where>
+    </sql>
+
+	<!-- 适用于主键自增类型 -->
+	<insert id="insert" parameterType="role" useGeneratedKeys="true" keyProperty="id">
+		insert into `role`( <include refid="table_columns" /> ) 
+		values ( <include refid="entity_properties" /> )
+	</insert>
+
+    <insert id="insertSelective" parameterType="role" useGeneratedKeys="true" keyProperty="id">
+        insert into `role`
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+			 <if test="id != null">
+				id,
+			 </if>
+			 <if test="role_name != null">
+				role_name,
+			 </if>
+			 <if test="role_desc != null">
+				role_desc,
+			 </if>
+        </trim>
+        values
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                #{id}
+            </if>
+            <if test="role_name != null">
+                #{role_name}
+            </if>
+            <if test="role_desc != null">
+                #{role_desc}
+            </if>
+        </trim>
+    </insert>
+
+    <delete id="deleteById" parameterType="int">
+        delete from `role`
+        where id = #{id}
+    </delete>
+
+	<delete id="deleteByIds" parameterType="list">
+		delete from `role`
+		where id in
+		<foreach item="item" collection="array" open="(" separator="," close=")">
+			#{item}
+		</foreach>
+	</delete>
+
+    <delete id="delete" parameterType="role">
+        delete from `role`
+        <include refid="where"/>
+    </delete>
+	
+	<update id="update" parameterType="role">
+		update `role` 
+		<trim prefix="set" suffixOverrides=",">
+			<if test="roleName != null and roleName != ''">role_name = #{roleName},</if>
+			<if test="roleDesc != null and roleDesc != ''">role_desc = #{roleDesc},</if>
+		</trim>
+		<where>id = #{id}</where>
+	</update>
+
+    <select id="find" resultMap="roleResultMap">
+        SELECT 	<include refid="table_columns"/>
+        FROM 	`role`
+        <include refid="where"/>
+    </select>
+
+    <select id="findAll" resultMap="roleResultMap">
+        select <include refid="table_columns" />
+        from `role`
+    </select>
+
+    <select id="findCount" resultType="java.lang.Long">
+        SELECT 	count(1)
+        FROM 	`role`
+        <include refid="where"/>
+    </select>
+
+    <select id="findById" resultMap="roleResultMap" parameterType="int" >
+        select <include refid="table_columns" />
+        from `role`
+        where id = #{id}
+    </select>
+
+    <!-- 其他自定义SQL -->
+</mapper>

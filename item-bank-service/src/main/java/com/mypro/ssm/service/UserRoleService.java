@@ -1,30 +1,29 @@
-package com.mypro.ssm.mapper;
+package com.mypro.ssm.service;
 
-import com.mypro.ssm.mapper.UserMapper;
-import com.mypro.ssm.po.User;
-
+import com.mypro.ssm.po.rbac.UserRole;
+import com.mypro.ssm.service.UserRoleService;
 import java.util.List;
 
 /**
- * Mapper Interface:User
+ * Service Interface:UserRole
  * @author fangxin
  * @date 2019-2-25
  */
+public interface UserRoleService{
 
-public interface UserMapper{
     /**
      * 添加
      * @author fangxin
      * @date 2019-2-25
      */
-    Integer insert(User user);
+    Integer insert(UserRole userRole);
 
     /**
      * 选择性添加
      * @author fangxin
      * @date 2019-2-25
      */
-    Integer insertSelective(User user);
+    Integer insertSelective(UserRole userRole);
 
     /**
      * 根据主键删除
@@ -45,40 +44,40 @@ public interface UserMapper{
      * @author fangxin
      * @date 2019-2-25
      */
-    Integer delete(User user);
+    Integer delete(UserRole userRole);
 
     /**
      * 更新
      * @author fangxin
      * @date 2019-2-25
      */
-    Integer update(User user);
+    Integer update(UserRole userRole);
 
     /**
      * 查询
      * @author fangxin
      * @date 2019-2-25
      */
-	List<User> find(User user);
+	List<UserRole> find(UserRole userRole);
 
     /**
      * 查询全部
      * @author fangxin
      * @date 2019-2-25
      */
-    List<User> findAll();
+    List<UserRole> findAll();
 
     /**
      * 查询数量
      * @author fangxin
      * @date 2019-2-25
      */
-    Long findCount(User user);
+    Long findCount(UserRole userRole);
 
     /**
      * 根据主键查询
      * @author fangxin
      * @date 2019-2-25
      */
-    List<User> findById(Long id);
+    List<UserRole> findById(Long id);
 }

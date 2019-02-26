@@ -15,6 +15,8 @@ public class CodeMsg {
     public static CodeMsg NOT_FIND_DATA = new CodeMsg(500105, "查找不到对应数据");
     public static CodeMsg FILE_FORMAT_EXCEPTION = new CodeMsg(500106, "文件格式异常");
     public static CodeMsg FILE_PARSE_EXCEPTION = new CodeMsg(500106, "文件解析异常");
+    // category操作
+    public static CodeMsg NOT_EMPTY_CATEGORY_EXCEPTION = new CodeMsg(500201, "不是空目录");
 
     private CodeMsg(int code, String message) {
         this.code = code;

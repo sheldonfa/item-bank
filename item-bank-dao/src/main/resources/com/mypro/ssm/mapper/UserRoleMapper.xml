@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.mypro.ssm.mapper.UserRoleMapper">
+	<resultMap id="userRoleResultMap" type="userRole">
+		<result property="userId" column="user_id" />
+		<result property="roleId" column="role_id" />
+	</resultMap>
+	
+	<sql id="table_columns">
+		`user_id`,
+		`role_id`
+    </sql>
+
+    <sql id="entity_properties">
+			#{userId},
+			#{roleId}
+    </sql>
+
+    <!--条件查询-->
+    <sql id="where">
+        <where>
+            	<if test="roleId != null and roleId != ''">and role_id = #{roleId}</if>
+        </where>
+    </sql>
+
+	<!-- 适用于主键自增类型 -->
+	<insert id="insert" parameterType="userRole" useGeneratedKeys="true" keyProperty="id">
+		insert into `user_role`( <include refid="table_columns" /> ) 
+		values ( <include refid="entity_properties" /> )
+	</insert>
+
+    <insert id="insertSelective" parameterType="userRole" useGeneratedKeys="true" keyProperty="id">
+        insert into `user_role`
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+			 <if test="user_id != null">
+				user_id,
+			 </if>
+			 <if test="role_id != null">
+				role_id,
+			 </if>
+        </trim>
+        values
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="user_id != null">
+                #{user_id}
+            </if>
+            <if test="role_id != null">
+                #{role_id}
+            </if>
+        </trim>
+    </insert>
+
+    <delete id="deleteById" parameterType="int">
+        delete from `user_role`
+        where id = #{id}
+    </delete>
+
+	<delete id="deleteByIds" parameterType="list">
+		delete from `user_role`
+		where id in
+		<foreach item="item" collection="array" open="(" separator="," close=")">
+			#{item}
+		</foreach>
+	</delete>
+
+    <delete id="delete" parameterType="userRole">
+        delete from `user_role`
+        <include refid="where"/>
+    </delete>
+	
+	<update id="update" parameterType="userRole">
+		update `user_role` 
+		<trim prefix="set" suffixOverrides=",">
+			<if test="roleId != null and roleId != ''">role_id = #{roleId},</if>
+		</trim>
+		<where>id = #{id}</where>
+	</update>
+
+    <select id="find" resultMap="userRoleResultMap">
+        SELECT 	<include refid="table_columns"/>
+        FROM 	`user_role`
+        <include refid="where"/>
+    </select>
+
+    <select id="findAll" resultMap="userRoleResultMap">
+        select <include refid="table_columns" />
+        from `user_role`
+    </select>
+
+    <select id="findCount" resultType="java.lang.Long">
+        SELECT 	count(1)
+        FROM 	`user_role`
+        <include refid="where"/>
+    </select>
+
+    <select id="findById" resultMap="userRoleResultMap" parameterType="int" >
+        select <include refid="table_columns" />
+        from `user_role`
+        where id = #{id}
+    </select>
+
+    <!-- 其他自定义SQL -->
+</mapper>

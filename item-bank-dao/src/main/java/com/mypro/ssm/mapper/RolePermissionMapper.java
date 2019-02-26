@@ -1,30 +1,30 @@
 package com.mypro.ssm.mapper;
 
-import com.mypro.ssm.mapper.UserMapper;
-import com.mypro.ssm.po.User;
+import com.mypro.ssm.mapper.RolePermissionMapper;
+import com.mypro.ssm.po.rbac.RolePermission;
 
 import java.util.List;
 
 /**
- * Mapper Interface:User
+ * Mapper Interface:RolePermission
  * @author fangxin
  * @date 2019-2-25
  */
 
-public interface UserMapper{
+public interface RolePermissionMapper{
     /**
      * 添加
      * @author fangxin
      * @date 2019-2-25
      */
-    Integer insert(User user);
+    Integer insert(RolePermission rolePermission);
 
     /**
      * 选择性添加
      * @author fangxin
      * @date 2019-2-25
      */
-    Integer insertSelective(User user);
+    Integer insertSelective(RolePermission rolePermission);
 
     /**
      * 根据主键删除
@@ -45,40 +45,40 @@ public interface UserMapper{
      * @author fangxin
      * @date 2019-2-25
      */
-    Integer delete(User user);
+    Integer delete(RolePermission rolePermission);
 
     /**
      * 更新
      * @author fangxin
      * @date 2019-2-25
      */
-    Integer update(User user);
+    Integer update(RolePermission rolePermission);
 
     /**
      * 查询
      * @author fangxin
      * @date 2019-2-25
      */
-	List<User> find(User user);
+	List<RolePermission> find(RolePermission rolePermission);
 
     /**
      * 查询全部
      * @author fangxin
      * @date 2019-2-25
      */
-    List<User> findAll();
+    List<RolePermission> findAll(RolePermission rolePermission);
 
     /**
      * 查询数量
      * @author fangxin
      * @date 2019-2-25
      */
-    Long findCount(User user);
+    Long findCount(RolePermission rolePermission);
 
     /**
      * 根据主键查询
      * @author fangxin
      * @date 2019-2-25
      */
-    List<User> findById(Long id);
+    List<RolePermission> findById(Long id);
 }
