@@ -5,71 +5,62 @@ import java.util.List;
 
 public class TreeNode {
 
-    private Long nodeId;
-    private Long parentId;
-    private String text;
-    private List<TreeNode> nodes;
-    private Boolean selectable = false;
-    private List<String> tags;
-
-    public List<String> getTags() {
-        return tags;
-    }
-
-    public void setTags(List<String> tags) {
-        this.tags = tags;
-    }
+    private Long code;
+    private Long parentCode;
+    private String name;
+    private List<TreeNode> child = new ArrayList<>();
+    private String icon;
 
     public TreeNode() {
     }
 
-    public Boolean getSelectable() {
-        return selectable;
+    public String getIcon() {
+        return icon;
     }
 
-    public void setSelectable(Boolean selectable) {
-        this.selectable = selectable;
+    public void setIcon(String icon) {
+        this.icon = icon;
     }
 
-    public Long getNodeId() {
-        return nodeId;
+    public Long getCode() {
+        return code;
     }
 
-    public void setNodeId(Long nodeId) {
-        this.nodeId = nodeId;
+    public void setCode(Long nodeId) {
+        this.code = nodeId;
     }
 
-    public Long getParentId() {
-        return parentId;
+    public Long getParentCode() {
+        return parentCode;
     }
 
-    public void setParentId(Long parentId) {
-        this.parentId = parentId;
+    public void setParentCode(Long parentId) {
+        this.parentCode = parentId;
     }
 
-    public String getText() {
-        return text;
+    public String getName() {
+        return name;
     }
 
-    public void setText(String text) {
-        this.text = text;
+    public void setName(String name) {
+        this.name = name;
     }
 
-    public List<TreeNode> getNodes() {
-        return nodes;
+    public List<TreeNode> getChild() {
+        return child;
     }
 
-    public void setNodes(List<TreeNode> nodes) {
-        this.nodes = nodes;
+    public void setChild(List<TreeNode> nodes) {
+        this.child = nodes;
     }
 
     @Override
     public String toString() {
         return "TreeNode{" +
-                "nodeId=" + nodeId +
-                ", parentId=" + parentId +
-                ", text='" + text + '\'' +
-                ", nodes=" + nodes +
+                "code=" + code +
+                ", parentCode=" + parentCode +
+                ", name='" + name + '\'' +
+                ", child=" + child +
                 '}';
     }
 }

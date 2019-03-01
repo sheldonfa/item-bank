@@ -9,6 +9,18 @@ public class Category {
     private Date gmtCreate;
     private Date gmtModified;
     private Boolean isDeleted;
+    /**
+     * 用户页面显示是否被选中
+     */
+    private Integer selected;
+
+    public Integer getSelected() {
+        return selected;
+    }
+
+    public void setSelected(Integer selected) {
+        this.selected = selected;
+    }
 
     public Long getId() {
         return id;

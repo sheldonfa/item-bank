@@ -36,17 +36,15 @@
 
                     <div class="box-body">
                         <div class="row">
-                            <div class="col-md-6">
-                                <div class="form-group">
-                                    <label>分类</label>
-                                    <select class="form-control select2 select2-hidden-accessible" multiple=""
-                                            data-placeholder="选择分类" style="width: 100%;" tabindex="-1"
-                                            aria-hidden="true" name="categoryId">
-                                        <c:forEach items="${categories}" var="i">
-                                            <option value="${i.id}">${i.name}</option>
-                                        </c:forEach>
-                                    </select>
-                                </div>
+                            <div class="col-md-2">
+                                <select id="sel1" data-select-level="1"
+                                        data-placeholder="选择分类" style="width: 100%;"
+                                        aria-hidden="true">
+                                    <option>请选择</option>
+                                    <c:forEach items="${categories}" var="i">
+                                        <option value="${i.id}">${i.name}</option>
+                                    </c:forEach>
+                                </select>
                             </div>
                             <!-- /.col -->
                         </div>
@@ -58,21 +56,105 @@
                             </div>
                         </div>
                     </div>
-
+                    <input type="hidden" id="categoryIdInput" name="categoryId">
                     <div class="box-footer">
-                        <button type="submit" class="btn">取消</button>
-                        <button type="submit" class="btn btn-success">创建</button>
+                        <button class="btn">取消</button>
+                        <button id="btn-create" class="btn btn-success">创建</button>
                     </div>
                 </div>
             </form>
         </section>
     </div>
     <!-- /.页面内容 -->
-    <jsp:include page="common/footer.jsp" />
+    <jsp:include page="common/footer.jsp"/>
 </div>
 <jsp:include page="common/script.jsp"/>
 <script>
+    $(function () {
+        setup.init();
+        action.bind();
+    });
+    var setup = {
+        init: function () {
 
+        }
+    };
+    var action = {
+        bind:function(){
+            this.changeSelect();
+            this.btnCreate();
+        },
+        changeSelect: function () {
+            $(document).on("change", "#sel1,#sel2,#sel3,#sel4,#sel5", function () {
+                var target = $(this);
+                var level = $(this).data("select-level");
+                var id = $(this).val();
+                $("#categoryIdInput").val(id);
+                network.selectChildCategory(id).done(function (result) {
+                    if (result["code"] == 0) {
+                        var children = result["data"];
+                        // 有子节点
+                        if (children.length > 0) {
+                            var subSelect = $("#sel" + eval(level + 1));
+                            var newdiv = ' <div class="col-md-2">' +
+                                '<select id="sel' + eval(level + 1) + '" data-select-level="' + eval(level + 1)+'" data-placeholder="选择分类" style="width: 100%;" aria-hidden="true">' +
+                                '<option>请选择</option>'
+                            for (var i in children) {
+                                newdiv += '                           <option value="' + children[i].id + '">' + children[i].name + '</option>'
+                            }
+                            newdiv += '</select>' +
+                            '</div>';
+                            // 已经存在这个下拉框
+                            if (subSelect[0]) {
+                                subSelect.parent().before(newdiv);
+                                subSelect.parent().remove();
+                            } else {
+                                console.log(newdiv);
+                                target.parent().after($(newdiv))
+                            }
+                        }
+                    }
+                })
+            })
+        },
+        btnCreate: function(){
+            // $(document).on("click","#btn-create",function(){
+            //     network.addQuestion().done(function(result){
+            //
+            //     })
+            // })
+        }
+    };
+    var network = {
+        selectChildCategory: function (id) {
+            var df = $.Deferred();
+            $.ajax({
+                type: "GET",
+                url: "/category/" + id + "/children",
+                contentType: "application/json; charset=utf-8",
+                success: function (result) {
+                    df.resolve(result)
+                }
+            });
+            return df;
+        },
+        addQuestion: function (id) {
+            var df = $.Deferred();
+            var data={
+
+            };
+            $.ajax({
+                type: "POST",
+                url: "/question",
+                contentType: "application/json; charset=utf-8",
+                data:JSON.stringify(data),
+                success: function (result) {
+                    df.resolve(result)
+                }
+            });
+            return df;
+        }
+    }
 </script>
 </body>
 </html>
