@@ -1,5 +1,6 @@
 package com.mypro.ssm.controller;
 
+import com.mypro.ssm.QuestionQuery;
 import com.mypro.ssm.common.Result;
 import com.mypro.ssm.po.Category;
 import com.mypro.ssm.po.Question;
@@ -8,10 +9,10 @@ import com.mypro.ssm.service.QuestionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 
 @Controller
@@ -33,23 +34,45 @@ public class QuestionController {
 
     @RequestMapping("list_edit/{id}")
     public String editList(@PathVariable Long id, Model model) {
-        List<Category> root = categoryService.findRoot();
+        List<List<Category>> categories = new ArrayList<>();
+
         Question question = questionService.findById(id);
-        model.addAttribute("categories", root);
+        Category category = categoryService.findById(question.getCategoryId());
+        LinkedList<Category> cs = new LinkedList<>();
+        Category parent = category;
+        cs.addFirst(parent);
+        while (parent.getParentId() != 0) {
+            parent = categoryService.findById(parent.getParentId());
+            cs.addFirst(parent);
+        }
+        // 查出兄弟节点，选中自己
+        for (int i = 0; i < cs.size(); i++) {
+            List<Category> children = categoryService.findChildren(cs.get(i).getParentId());
+            for (Category selected : children) {
+                if (selected.getId().equals(cs.get(i).getId())) {
+                    selected.setSelected(1);
+                    break;
+                }
+            }
+            categories.add(children);
+        }
+        model.addAttribute("categories", categories);
         model.addAttribute("question", question);
         return "question-edit";
     }
 
-    @RequestMapping("add")
-    public String add(Question question) {
+    @RequestMapping(value = "", method = RequestMethod.POST)
+    @ResponseBody
+    public Result add(@RequestBody Question question) {
         questionService.add(question);
-        return "redirect:/";
+        return Result.success();
     }
 
-    @RequestMapping("edit")
-    public String edit(Question question) {
+    @RequestMapping(value = "", method = RequestMethod.PUT)
+    @ResponseBody
+    public Result edit(@RequestBody Question question) {
         questionService.update(question);
-        return "redirect:/";
+        return Result.success();
     }
 
     @RequestMapping("del/{id}")
@@ -72,5 +95,19 @@ public class QuestionController {
         List<Question> reviews = questionService.findNeedReviews();
         model.addAttribute("questions", reviews);
         return "question-list-review";
+    }
+
+    /**
+     * 记住记不住更新
+     *
+     * @param id
+     * @param data
+     * @return
+     */
+    @RequestMapping("{id}/remember")
+    @ResponseBody
+    public Result remember(@PathVariable Long id, @RequestBody QuestionQuery data) {
+        questionService.remember(id, data.getRememberFlag());
+        return Result.success();
     }
 }

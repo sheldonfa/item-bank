@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 @Service
@@ -23,18 +24,18 @@ public class QuestionServiceImpl implements QuestionService {
 
     @Override
     public Integer update(Question question) {
-        return questionMapper.updateByPrimaryKeySelective(question);
+        return questionMapper.update(question);
     }
 
     @Override
     public List<Question> findAll() {
-        return questionMapper.selectAll();
+        return questionMapper.findAll();
     }
 
     @Override
     public List<Question> findNeedReviews() {
         List<Question> result = new ArrayList<>();
-        List<Question> questions = questionMapper.selectAll();
+        List<Question> questions = questionMapper.findAll();
         for (int i = 0; i < questions.size(); i++) {
             if (Ebbinghaus.needRecite(questions.get(i))) {
                 result.add(questions.get(i));
@@ -45,15 +46,21 @@ public class QuestionServiceImpl implements QuestionService {
 
     @Override
     public Question findById(Long id) {
-        Question question = new Question();
-        question.setId(id);
-        return questionMapper.selectOne(question);
+        return questionMapper.findById(id);
     }
 
     @Override
     public Integer delete(Long id) {
-        Question question = new Question();
-        question.setId(id);
-        return questionMapper.deleteByPrimaryKey(question);
+        return questionMapper.deleteById(id);
+    }
+
+    @Override
+    public void remember(Long id,Boolean isRemember) {
+        Question question = questionMapper.findById(id);
+        if(isRemember){
+            question.setStage(question.getStage() + 1);
+        }
+        question.setLastReviewTime(new Date());
+        questionMapper.update(question);
     }
 }

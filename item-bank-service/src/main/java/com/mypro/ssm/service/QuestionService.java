@@ -17,4 +17,6 @@ public interface QuestionService {
     Question findById(Long id);
 
     Integer delete(Long id);
+
+    void remember(Long id,Boolean isRemember);
 }

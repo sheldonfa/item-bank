@@ -47,26 +47,26 @@
     <insert id="insertSelective" parameterType="role" useGeneratedKeys="true" keyProperty="id">
         insert into `role`
         <trim prefix="(" suffix=")" suffixOverrides=",">
-			 <if test="id != null">
-				id,
-			 </if>
-			 <if test="role_name != null">
-				role_name,
-			 </if>
-			 <if test="role_desc != null">
-				role_desc,
-			 </if>
+            <if test="id != null">
+                id,
+            </if>
+            <if test="roleName != null">
+                role_name,
+            </if>
+            <if test="roleDesc != null">
+                role_desc,
+            </if>
         </trim>
         values
         <trim prefix="(" suffix=")" suffixOverrides=",">
             <if test="id != null">
-                #{id}
+                #{id},
             </if>
-            <if test="role_name != null">
-                #{role_name}
+            <if test="roleName != null">
+                #{roleName},
             </if>
-            <if test="role_desc != null">
-                #{role_desc}
+            <if test="roleDesc != null">
+                #{roleDesc},
             </if>
         </trim>
     </insert>

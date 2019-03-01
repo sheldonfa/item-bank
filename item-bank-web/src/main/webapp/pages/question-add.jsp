@@ -28,41 +28,39 @@
 
         <!-- 正文区域 -->
         <section class="content">
-            <form action="${pageContext.request.contextPath}/question/add">
-                <div class="box box-primary">
-                    <div class="box-header with-border">
-                        <h3 class="box-title">模块操作</h3>
-                    </div>
+            <div class="box box-primary">
+                <div class="box-header with-border">
+                    <h3 class="box-title">模块操作</h3>
+                </div>
 
-                    <div class="box-body">
-                        <div class="row">
-                            <div class="col-md-2">
-                                <select id="sel1" data-select-level="1"
-                                        data-placeholder="选择分类" style="width: 100%;"
-                                        aria-hidden="true">
-                                    <option>请选择</option>
-                                    <c:forEach items="${categories}" var="i">
-                                        <option value="${i.id}">${i.name}</option>
-                                    </c:forEach>
-                                </select>
-                            </div>
-                            <!-- /.col -->
+                <div class="box-body">
+                    <div class="row">
+                        <div class="col-md-2">
+                            <select id="sel1" data-select-level="1"
+                                    data-placeholder="选择分类" style="width: 100%;"
+                                    aria-hidden="true">
+                                <option>请选择</option>
+                                <c:forEach items="${categories}" var="i">
+                                    <option value="${i.id}">${i.name}</option>
+                                </c:forEach>
+                            </select>
                         </div>
-                        <!-- /.row -->
-                        <div class="row">
-                            <div class="col-md-12">
-                                <textarea name="content" id="markdown-textarea" htmlEscape="true"
-                                          style="width: 100%; height: 200px; font-size: 14px; line-height: 18px; border: 1px solid #dddddd; padding: 10px;"></textarea>
-                            </div>
-                        </div>
+                        <!-- /.col -->
                     </div>
-                    <input type="hidden" id="categoryIdInput" name="categoryId">
-                    <div class="box-footer">
-                        <button class="btn">取消</button>
-                        <button id="btn-create" class="btn btn-success">创建</button>
+                    <!-- /.row -->
+                    <div class="row">
+                        <div class="col-md-12">
+                            <textarea name="content" id="markdown-textarea" htmlEscape="true"
+                                      style="width: 100%; height: 200px; font-size: 14px; line-height: 18px; border: 1px solid #dddddd; padding: 10px;"></textarea>
+                        </div>
                     </div>
                 </div>
-            </form>
+                <input type="hidden" id="categoryIdInput" name="categoryId">
+                <div class="box-footer">
+                    <button class="btn">取消</button>
+                    <button id="btn-create" class="btn btn-success">创建</button>
+                </div>
+            </div>
         </section>
     </div>
     <!-- /.页面内容 -->
@@ -118,11 +116,15 @@
             })
         },
         btnCreate: function(){
-            // $(document).on("click","#btn-create",function(){
-            //     network.addQuestion().done(function(result){
-            //
-            //     })
-            // })
+            $(document).on("click","#btn-create",function(){
+                var categoryId = $("#categoryIdInput").val();
+                var content = $("#markdown-textarea").val();
+                network.addQuestion(categoryId,content).done(function(result){
+                    if (result["code"] == 0) {
+                        window.location.href = "/question/list_add"
+                    }
+                })
+            })
         }
     };
     var network = {
@@ -138,11 +140,12 @@
             });
             return df;
         },
-        addQuestion: function (id) {
+        addQuestion: function (categoryId,content) {
             var df = $.Deferred();
-            var data={
-
-            };
+            var data = {
+                categoryId: categoryId,
+                content: content
+            }
             $.ajax({
                 type: "POST",
                 url: "/question",

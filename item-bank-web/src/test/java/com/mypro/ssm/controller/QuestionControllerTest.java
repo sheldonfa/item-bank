@@ -9,6 +9,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
@@ -24,16 +25,6 @@ public class QuestionControllerTest {
     @Autowired
     private QuestionService questionService;
 
-    @Before
-    public void setUp() {
-        questionMapper.deleteAll();
-        // Setup初始化数据
-        for (int i = 0; i < 24; i++) {
-            Question question = new Question(1L, "asdf", 1, DateUtils.stringToDate("2019-02-04 10:00:00", "yyyy-MM-dd HH:mm:ss"));
-            questionService.add(question);
-        }
-    }
-
     @Test
     public void findNeedReviews() {
         List<Question> reviews = questionService.findNeedReviews();
@@ -41,6 +32,7 @@ public class QuestionControllerTest {
     }
 
     @Test
+    @Rollback
     public void testAdd() {
         Question question = new Question();
         question.setCategoryId(1L);

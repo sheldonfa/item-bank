@@ -1,10 +1,11 @@
 /*初始化category*/
-INSERT INTO `item_bank`.`category` (`id`, `parent_id`, `name`, `gmt_create`, `gmt_modified`, `is_deleted`) VALUES ('2', '0', 'javaWeb技术栈', '2019-02-26 21:23:38', '2019-02-26 21:23:38', '0');
+INSERT INTO `category` (`id`, `parent_id`, `name`, `gmt_create`, `gmt_modified`, `is_deleted`) VALUES ('1', '0', 'javaWeb技术栈', '2019-02-26 21:23:38', '2019-02-26 21:23:38', '0');
 
+/*初始化question*/
+INSERT INTO `question` (`id`, `category_id`, `content`, `stage`, `last_review_time`, `gmt_create`, `gmt_modified`, `is_deleted`) VALUES ('1', '1', 'asdf', '1', '2019-02-04 10:00:00', '2019-02-26 23:28:05', '2019-02-26 23:28:05', '0');
 
 /*初始化用户数据*/
-insert into `user`(username,password,email,phone_num,status)
-values('xiaom','123456','xiaom@qq.com','020-8888888',1);
+insert into `user`(username,password,email,phone_num,status)values('admin','admin','xiaom@qq.com','020-8888888',1);
 
 /*初始化角色数据*/
 insert into role(role_name,role_desc) values('ROLE_USER','普通用户角色');

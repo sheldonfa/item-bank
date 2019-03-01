@@ -8,7 +8,6 @@ import com.mypro.ssm.mapper.QuestionMapper;
 import com.mypro.ssm.po.Category;
 import com.mypro.ssm.po.Question;
 import com.mypro.ssm.service.CategoryService;
-import com.mypro.ssm.service.QuestionService;
 import com.mypro.ssm.util.JSONUtil;
 import com.mypro.ssm.util.TreeBuilder;
 import com.mypro.ssm.vo.TreeNode;
@@ -30,6 +29,106 @@ public class CategoryServiceImpl implements CategoryService {
     @Autowired
     private QuestionMapper questionMapper;
 
+    /**
+     * 添加
+     * @author fangxin
+     * @date 2019-2-26
+     */
+    @Override
+    public Integer insert(Category category){
+        return categoryMapper.insert(category);
+    }
+
+    /**
+     * 选择性添加
+     * @author fangxin
+     * @date 2019-2-26
+     */
+    @Override
+    public Integer insertSelective(Category category){
+        return categoryMapper.insertSelective(category);
+    }
+
+    /**
+     * 根据主键删除
+     * @author fangxin
+     * @date 2019-2-26
+     */
+    @Override
+    public Integer deleteById(Long id){
+        return categoryMapper.deleteById(id);
+    }
+
+    /**
+     * 根据主键数组删除
+     * @author fangxin
+     * @date 2019-2-26
+     */
+    @Override
+    public Integer deleteByIds(Long[] ids){
+        return categoryMapper.deleteByIds(ids);
+    }
+
+    /**
+     * 条件删除
+     * @author fangxin
+     * @date 2019-2-26
+     */
+    @Override
+    public Integer delete(Category category){
+        return categoryMapper.delete(category);
+    }
+
+    /**
+     * 更新
+     * @author fangxin
+     * @date 2019-2-26
+     */
+    @Override
+    public Integer update(Category category){
+        return categoryMapper.update(category);
+    }
+
+    /**
+     * 查询
+     * @author fangxin
+     * @date 2019-2-26
+     */
+    @Override
+    public List<Category> find(Category category){
+        return categoryMapper.find(category);
+    }
+
+    /**
+     * 查询全部
+     * @author fangxin
+     * @date 2019-2-26
+     */
+    @Override
+    public List<Category> findAll(){
+        return categoryMapper.findAll();
+    }
+
+    /**
+     * 查询数量
+     * @author fangxin
+     * @date 2019-2-26
+     */
+    @Override
+    public Long findCount(Category category){
+        return categoryMapper.findCount(category);
+    }
+
+    /**
+     * 根据主键查询
+     * @author fangxin
+     * @date 2019-2-26
+     */
+    @Override
+    public Category findById(Long id){
+        return categoryMapper.findById(id);
+    }
+
     @Override
     public List<Category> findRoot() {
         return findByParentId(0L);
@@ -38,12 +137,12 @@ public class CategoryServiceImpl implements CategoryService {
     @Override
     public List<TreeNode> tree() {
         ArrayList<TreeNode> trees = new ArrayList<>();
-        List<Category> all = categoryMapper.selectAll();
+        List<Category> all = categoryMapper.findAll();
         for (Category c : all) {
             TreeNode treeNode = new TreeNode();
-            treeNode.setNodeId(c.getId());
-            treeNode.setParentId(c.getParentId());
-            treeNode.setText(c.getName());
+            treeNode.setCode(c.getId());
+            treeNode.setParentCode(c.getParentId());
+            treeNode.setName(c.getName());
             List<String> tags = new ArrayList<>();
             Map<String, String> info = new HashMap<>();
             info.put("id", c.getId().toString());
@@ -53,7 +152,6 @@ public class CategoryServiceImpl implements CategoryService {
                 e.printStackTrace();
                 return null;
             }
-            treeNode.setTags(tags);
             trees.add(treeNode);
         }
         return TreeBuilder.buildByRecursive(trees);
@@ -61,7 +159,7 @@ public class CategoryServiceImpl implements CategoryService {
 
     @Override
     public Integer add(Category category) {
-        return categoryMapper.addUseKey(category);
+        return categoryMapper.insertSelective(category);
     }
 
     @Override
@@ -69,8 +167,8 @@ public class CategoryServiceImpl implements CategoryService {
         Question param = new Question();
         param.setCategoryId(id);
         // 判断是否是挂载目录
-        Category c = categoryMapper.selectByPrimaryKey(id);
-        List<Question> questions = questionMapper.select(param);
+        Category c = categoryMapper.findById(id);
+        List<Question> questions = questionMapper.find(param);
         // 目录下没有任何题目了
         if (questions.size() == 0) {
             Category para = new Category();
@@ -82,10 +180,17 @@ public class CategoryServiceImpl implements CategoryService {
 
     }
 
+    @Override
+    public List<Category> findChildren(Long id) {
+        Category category = new Category();
+        category.setParentId(id);
+
+        return categoryMapper.find(category);
+    }
+
     private List<Category> findByParentId(Long parentId) {
-        Example example = new Example(Category.class);
-        Example.Criteria criteria = example.createCriteria();
-        criteria.andEqualTo("parentId", parentId);
-        return categoryMapper.selectByExample(example);
+        Category c = new Category();
+        c.setParentId(parentId);
+        return categoryMapper.find(c);
     }
 }

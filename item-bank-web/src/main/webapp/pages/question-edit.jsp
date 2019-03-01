@@ -28,54 +28,42 @@
 
         <!-- 正文区域 -->
         <section class="content">
-            <form action="${pageContext.request.contextPath}/question/edit">
-                <div class="box box-primary">
-                    <div class="box-header with-border">
-                        <h3 class="box-title">模块操作</h3>
-                    </div>
+            <div class="box box-primary">
+                <div class="box-header with-border">
+                    <h3 class="box-title">模块操作</h3>
+                </div>
 
-                    <div class="box-body">
-                        <div class="row">
-                            <div class="col-md-6">
-                                <div class="form-group">
-                                    <label>分类</label>
-                                    <select class="form-control select2 select2-hidden-accessible" multiple=""
-                                            data-placeholder="选择分类" style="width: 100%;" tabindex="-1"
-                                            aria-hidden="true" name="type">
-                                        <c:forEach items="${categories}" var="i">
-                                            <c:choose>
-                                                <c:when test="${i.id==question.categoryId}">
-                                                    <option value="${i.id}" selected>${i.name}</option>
-                                                </c:when>
-                                                <c:otherwise>
-                                                    <option value="${i.id}">${i.name}</option>
-                                                </c:otherwise>
-                                            </c:choose>
-
-
-                                        </c:forEach>
-                                    </select>
-                                </div>
+                <div class="box-body">
+                    <div class="row">
+                        <c:forEach items="${categories}" var="e" varStatus="s">
+                            <div class="col-md-2">
+                                <select id="sel${s.count}" data-select-level="1"
+                                        data-placeholder="选择分类" style="width: 100%;"
+                                        aria-hidden="true">
+                                    <option>请选择</option>
+                                    <c:forEach items="${e}" var="ee">
+                                        <option value="${ee.id}"
+                                                <c:if test="${ee.selected==1}">selected</c:if>>${ee.name}</option>
+                                    </c:forEach>
+                                </select>
                             </div>
-                            <!-- /.col -->
-                        </div>
-                        <!-- /.row -->
-                        <div class="row">
-                            <div class="col-md-12">
-
-                                <textarea name="content" id="markdown-textarea"
-                                          style="width: 100%; height: 200px; font-size: 14px; line-height: 18px; border: 1px solid #dddddd; padding: 10px;">${question.content}</textarea>
-                            </div>
-                        </div>
+                        </c:forEach>
                     </div>
-
-                    <div class="box-footer">
-                        <button type="submit" class="btn">取消</button>
-                        <button type="submit" class="btn btn-primary btn-delete-js">确认</button>
+                    <!-- /.row -->
+                    <div class="row">
+                        <div class="col-md-12">
+                            <textarea name="content" id="markdown-textarea" htmlEscape="true"
+                                      style="width: 100%; height: 200px; font-size: 14px; line-height: 18px; border: 1px solid #dddddd; padding: 10px;">${question.content}</textarea>
+                        </div>
                     </div>
                 </div>
-                <input type="hidden" value="${question.id}" name="id">
-            </form>
+                <input type="hidden" id="categoryIdInput" name="categoryId" value="${question.categoryId}">
+                <input type="hidden" id="question-id" name="id" value="${question.id}">
+                <div class="box-footer">
+                    <button class="btn">取消</button>
+                    <button id="btn-question-edit-confirm" class="btn btn-info">确认</button>
+                </div>
+            </div>
         </section>
     </div>
     <!-- /.页面内容 -->
@@ -83,6 +71,101 @@
 </div>
 <jsp:include page="common/script.jsp"/>
 <script>
+    $(function () {
+        setup.init();
+        action.bind();
+    });
+    var setup = {
+        init: function () {
+
+        }
+    };
+    var action = {
+        bind: function () {
+            this.changeSelect();
+            this.btnEditQuestion();
+        },
+        changeSelect: function () {
+            $(document).on("change", "#sel1,#sel2,#sel3,#sel4,#sel5", function () {
+                var target = $(this);
+                var level = $(this).data("select-level");
+                var id = $(this).val();
+                $("#categoryIdInput").val(id);
+                network.selectChildCategory(id).done(function (result) {
+                    if (result["code"] == 0) {
+                        var children = result["data"];
+                        // 有子节点
+                        if (children.length > 0) {
+                            var subSelect = $("#sel" + eval(level + 1));
+                            var newdiv = ' <div class="col-md-2">' +
+                                '<select id="sel' + eval(level + 1) + '" data-select-level="' + eval(level + 1) + '" data-placeholder="选择分类" style="width: 100%;" aria-hidden="true">' +
+                                '<option>请选择</option>'
+                            for (var i in children) {
+                                newdiv += '                           <option value="' + children[i].id + '">' + children[i].name + '</option>'
+                            }
+                            newdiv += '</select>' +
+                                '</div>';
+                            // 已经存在这个下拉框
+                            if (subSelect[0]) {
+                                var div = subSelect.parent()
+                                div.before(newdiv);
+                                div.nextAll().remove()
+                                div.remove();
+                            } else {
+                                console.log(newdiv);
+                                target.parent().after($(newdiv))
+                            }
+                        }
+                    }
+                })
+            })
+        },
+        btnEditQuestion:function(){
+            $(document).on("click","#btn-question-edit-confirm",function(){
+                var id = $("#question-id").val();
+                var categoryId = $("#categoryIdInput").val();
+                var content = $("#markdown-textarea").val();
+                network.editQuestion(id,categoryId,content).done(function(result){
+                    if (result["code"] == 0) {
+                        window.location.href = "/question/list"
+                    }
+                })
+            })
+        }
+    };
+    var network = {
+        selectChildCategory: function (id) {
+            var df = $.Deferred();
+            $.ajax({
+                type: "GET",
+                url: "/category/" + id + "/children",
+                contentType: "application/json; charset=utf-8",
+                success: function (result) {
+                    df.resolve(result)
+                }
+            });
+            return df;
+        },
+        editQuestion: function (id, categoryId, content) {
+            var df = $.Deferred();
+            var data = {
+                id: id,
+                categoryId: categoryId,
+                content: content
+            };
+            $.ajax({
+                type: "PUT",
+                url: "/question",
+                contentType: "application/json; charset=utf-8",
+                data: JSON.stringify(data),
+                dataType: "json",
+                success: function (result) {
+                    df.resolve(result)
+                }
+            });
+            return df;
+        }
+    }
 </script>
 </body>
 </html>

@@ -32,20 +32,20 @@
     <insert id="insertSelective" parameterType="rolePermission" useGeneratedKeys="true" keyProperty="id">
         insert into `role_permission`
         <trim prefix="(" suffix=")" suffixOverrides=",">
-			 <if test="role_id != null">
-				role_id,
-			 </if>
-			 <if test="permission_id != null">
-				permission_id,
-			 </if>
+            <if test="roleId != null">
+                role_id,
+            </if>
+            <if test="permissionId != null">
+                permission_id,
+            </if>
         </trim>
         values
         <trim prefix="(" suffix=")" suffixOverrides=",">
-            <if test="role_id != null">
-                #{role_id}
+            <if test="roleId != null">
+                #{roleId},
             </if>
-            <if test="permission_id != null">
-                #{permission_id}
+            <if test="permissionId != null">
+                #{permissionId},
             </if>
         </trim>
     </insert>

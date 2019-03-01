@@ -54,7 +54,7 @@
             <if test="password != null and password != ''">and password = #{password}</if>
             <if test="email != null and email != ''">and email = #{email}</if>
             <if test="phoneNum != null and phoneNum != ''">and phone_num = #{phoneNum}</if>
-            <if test="status != null and status != ''">and status = #{status}</if>
+            <if test="status != null">and status = #{status}</if>
         </where>
     </sql>
 
@@ -83,7 +83,7 @@
             <if test="email != null">
                 email,
             </if>
-            <if test="phone_num != null">
+            <if test="phoneNum != null">
                 phone_num,
             </if>
             <if test="status != null">
@@ -93,22 +93,22 @@
         values
         <trim prefix="(" suffix=")" suffixOverrides=",">
             <if test="id != null">
-                #{id}
+                #{id},
             </if>
             <if test="username != null">
-                #{username}
+                #{username},
             </if>
             <if test="password != null">
-                #{password}
+                #{password},
             </if>
             <if test="email != null">
-                #{email}
+                #{email},
             </if>
-            <if test="phone_num != null">
-                #{phone_num}
+            <if test="phoneNum != null">
+                #{phoneNum},
             </if>
             <if test="status != null">
-                #{status}
+                #{status},
             </if>
         </trim>
     </insert>

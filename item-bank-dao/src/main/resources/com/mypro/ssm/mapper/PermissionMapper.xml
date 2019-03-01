@@ -36,26 +36,26 @@
     <insert id="insertSelective" parameterType="permission" useGeneratedKeys="true" keyProperty="id">
         insert into `permission`
         <trim prefix="(" suffix=")" suffixOverrides=",">
-			 <if test="id != null">
-				id,
-			 </if>
-			 <if test="permission_name != null">
-				permission_name,
-			 </if>
-			 <if test="url != null">
-				url,
-			 </if>
+            <if test="id != null">
+                id,
+            </if>
+            <if test="permissionName != null">
+                permission_name,
+            </if>
+            <if test="url != null">
+                url,
+            </if>
         </trim>
         values
         <trim prefix="(" suffix=")" suffixOverrides=",">
             <if test="id != null">
-                #{id}
+                #{id},
             </if>
-            <if test="permission_name != null">
-                #{permission_name}
+            <if test="permissionName != null">
+                #{permissionName},
             </if>
             <if test="url != null">
-                #{url}
+                #{url},
             </if>
         </trim>
     </insert>

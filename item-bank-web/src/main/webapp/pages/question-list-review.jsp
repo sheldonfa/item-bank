@@ -53,14 +53,15 @@
                                         <p class="question-md">${i.content}</p>
                                         <form class="form-horizontal">
                                             <div class="form-group margin-bottom-none">
-                                                <div class="col-sm-3">
-                                                    <button type="submit"
-                                                            class="btn btn-success btn-block btn-sm">Send
+                                                <div class="col-sm-1">
+                                                    <button class="btn-remember btn btn-danger btn-block"
+                                                            data-id="${i.id}">
+                                                        记得
                                                     </button>
                                                 </div>
-                                                <div class="col-sm-3">
-                                                    <button type="submit"
-                                                            class="btn btn-danger btn-block btn-sm">Send
+                                                <div class="col-sm-1">
+                                                    <button class="btn-not-remember btn btn-block" data-id="${i.id}">
+                                                        不记得
                                                     </button>
                                                 </div>
                                             </div>
@@ -84,32 +85,68 @@
 <jsp:include page="common/script.jsp"/>
 <script>
     $(function () {
-        markdowntohtml()
-
-        $(".btn-edit-js").click(function () {
-            var id = $($(this).parents(".box")[0]).attr("id");
-            window.location.href = "${pageContext.request.contextPath}/question/list_edit/" + id;
-        })
-
-        /*删除按钮*/
-        $(function () {
-            $(".btn-delete-js").click(function () {
-                if(confirm("确定要删除吗？")){
-                    $.post("/question/del/"+$(this).attr("id"),function (result) {
-                        if(result["code"]==0){
-                            window.location.href = "/question/list";
-                        }
-                    });
-                }
-            })
-        })
+        setup.init();
+        action.bind();
     });
+    var setup = {
+        init: function () {
+            this.markdownFormat()
+        },
+        markdownFormat: function () {
+            markdowntohtml()
 
-    function markdowntohtml() {
-        var converter = new showdown.Converter()
-        $(".question-md").each(function () {
-            $(this).html(converter.makeHtml($.trim($(this).html())))
-        });
+            function markdowntohtml() {
+                var converter = new showdown.Converter()
+                $(".question-md").each(function () {
+                    $(this).html(converter.makeHtml($.trim($(this).html())))
+                });
+            }
+        }
+    };
+    var action = {
+        bind: function () {
+            this.btnRemember();
+            this.btnNotRemember();
+        },
+        btnRemember: function () {
+            $(document).on("click", ".btn-remember", function () {
+                var id = $(this).data("id");
+                network.remember(id, true).done(function(result){
+                    if (result["code"] == 0) {
+                        window.location.href = "http://localhost:8080/question/review_list"
+                    }
+                })
+            })
+        },
+        btnNotRemember: function () {
+            $(document).on("click", ".btn-not-remember", function () {
+                var id = $(this).data("id");
+                network.remember(id, false).done(function(result){
+                    if (result["code"] == 0) {
+                        window.location.href = "http://localhost:8080/question/review_list"
+                    }
+                })
+            })
+        }
+
+    }
+    var network = {
+        remember: function (id, flag) {
+            var df = $.Deferred();
+            var data = {
+                rememberFlag: flag
+            };
+            $.ajax({
+                type: "PUT",
+                url: "/question/" + id + "/remember",
+                contentType: "application/json; charset=utf-8",
+                data: JSON.stringify(data),
+                success: function (result) {
+                    df.resolve(result)
+                }
+            });
+            return df;
+        }
     }
 
 </script>

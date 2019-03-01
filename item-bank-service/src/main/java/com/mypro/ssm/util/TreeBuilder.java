@@ -14,9 +14,9 @@ public class TreeBuilder {
      * @return
      */
     public static List<TreeNode> buildByRecursive(List<TreeNode> treeNodes) {
-        List<TreeNode> trees = new ArrayList<TreeNode>();
+        List<TreeNode> trees = new ArrayList<>();
         for (TreeNode treeNode : treeNodes) {
-            if (treeNode.getParentId()==0) {
+            if (treeNode.getParentCode()==0) {
                 trees.add(findChildren(treeNode, treeNodes));
             }
         }
@@ -31,11 +31,11 @@ public class TreeBuilder {
      */
     public static TreeNode findChildren(TreeNode treeNode, List<TreeNode> treeNodes) {
         for (TreeNode it : treeNodes) {
-            if (treeNode.getNodeId().equals(it.getParentId())) {
-                if (treeNode.getNodes() == null) {
-                    treeNode.setNodes(new ArrayList<>());
+            if (treeNode.getCode().equals(it.getParentCode())) {
+                if (treeNode.getChild() == null) {
+                    treeNode.setChild(new ArrayList<>());
                 }
-                treeNode.getNodes().add(findChildren(it, treeNodes));
+                treeNode.getChild().add(findChildren(it, treeNodes));
             }
         }
         return treeNode;

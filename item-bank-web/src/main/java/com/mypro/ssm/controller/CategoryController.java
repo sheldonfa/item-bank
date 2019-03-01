@@ -7,9 +7,8 @@ import com.mypro.ssm.service.CategoryService;
 import com.mypro.ssm.vo.TreeNode;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.*;
 import sun.reflect.generics.tree.Tree;
 
 import java.util.List;
@@ -26,14 +25,32 @@ public class CategoryController {
         return "category-list";
     }
 
-    @RequestMapping("del/{id}")
+    @RequestMapping(value = "", method = RequestMethod.POST)
+    @ResponseBody
+    public Result add(Category category) {
+        categoryService.insertSelective(category);
+        return Result.success();
+    }
+
+    @RequestMapping(value = "{id}", method = RequestMethod.PUT)
+    @ResponseBody
+    public Result update(@PathVariable Long id, @RequestBody Category category) {
+        category.setId(id);
+        categoryService.update(category);
+        return Result.success();
+    }
+
+    @RequestMapping(value = "{id}", method = RequestMethod.DELETE)
     @ResponseBody
     public Result del(@PathVariable Long id) {
-        try {
-            categoryService.del(id);
-        } catch (BusinessException e) {
-            return Result.error(e.getCodeMsg());
-        }
+        categoryService.deleteById(id);
+        return Result.success();
+    }
+
+    @RequestMapping(value = "{id}", method = RequestMethod.GET)
+    @ResponseBody
+    public Result getJson(@PathVariable Long id, Model model) {
+        categoryService.findById(id);
         return Result.success();
     }
 
@@ -41,6 +58,16 @@ public class CategoryController {
     @ResponseBody
     public Result<List<TreeNode>> listTree() {
         List<TreeNode> categoryies = categoryService.tree();
+        for (TreeNode t : categoryies) {
+            t.setIcon("icon-th");
+        }
         return Result.success(categoryies);
+    }
+
+    @RequestMapping("{id}/children")
+    @ResponseBody
+    public Result children(@PathVariable Long id) {
+        List<Category> children = categoryService.findChildren(id);
+        return Result.success(children);
     }
 }

@@ -3,6 +3,150 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.mypro.ssm.mapper.CategoryMapper">
+
+    <resultMap id="categoryResultMap" type="category">
+        <id property="id" column="id" />
+        <result property="parentId" column="parent_id" />
+        <result property="name" column="name" />
+        <result property="gmtCreate" column="gmt_create" />
+        <result property="gmtModified" column="gmt_modified" />
+        <result property="isDeleted" column="is_deleted" />
+    </resultMap>
+
+    <sql id="table_columns">
+        `id`,
+        `parent_id`,
+        `name`,
+        `gmt_create`,
+        `gmt_modified`,
+        `is_deleted`
+    </sql>
+
+    <sql id="entity_properties">
+        #{id},
+        #{parentId},
+        #{name},
+        #{gmtCreate},
+        #{gmtModified},
+        #{isDeleted}
+    </sql>
+
+    <!--条件查询-->
+    <sql id="where">
+        <where>
+            <if test="parentId != null">and parent_id = #{parentId}</if>
+            <if test="name != null and name != ''">and name = #{name}</if>
+            <if test="gmtCreate != null">and gmt_create = #{gmtCreate}</if>
+            <if test="gmtModified != null">and gmt_modified = #{gmtModified}</if>
+            <if test="isDeleted != null">and is_deleted = #{isDeleted}</if>
+        </where>
+    </sql>
+
+    <!-- 适用于主键自增类型 -->
+    <insert id="insert" parameterType="category" useGeneratedKeys="true" keyProperty="id">
+        insert into `category`( <include refid="table_columns" /> )
+        values ( <include refid="entity_properties" /> )
+    </insert>
+
+    <insert id="insertSelective" parameterType="category" useGeneratedKeys="true" keyProperty="id">
+        insert into `category`
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                id,
+            </if>
+            <if test="parentId != null">
+                parent_id,
+            </if>
+            <if test="name != null">
+                name,
+            </if>
+            <if test="gmtCreate != null">
+                gmt_create,
+            </if>
+            <if test="gmtModified != null">
+                gmt_modified,
+            </if>
+            <if test="isDeleted != null">
+                is_deleted,
+            </if>
+        </trim>
+        values
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                #{id},
+            </if>
+            <if test="parentId != null">
+                #{parentId},
+            </if>
+            <if test="name != null">
+                #{name},
+            </if>
+            <if test="gmtCreate != null">
+                #{gmtCreate},
+            </if>
+            <if test="gmtModified != null">
+                #{gmtModified},
+            </if>
+            <if test="isDeleted != null">
+                #{isDeleted},
+            </if>
+        </trim>
+    </insert>
+
+    <delete id="deleteById" parameterType="long">
+        delete from `category`
+        where id = #{id}
+    </delete>
+
+    <delete id="deleteByIds" parameterType="list">
+        delete from `category`
+        where id in
+        <foreach item="item" collection="array" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+    </delete>
+
+    <delete id="delete" parameterType="category">
+        delete from `category`
+        <include refid="where"/>
+    </delete>
+
+    <update id="update" parameterType="category">
+        update `category`
+        <trim prefix="set" suffixOverrides=",">
+            <if test="parentId != null and parentId != ''">parent_id = #{parentId},</if>
+            <if test="name != null and name != ''">name = #{name},</if>
+            <if test="gmtCreate != null and gmtCreate != ''">gmt_create = #{gmtCreate},</if>
+            <if test="gmtModified != null and gmtModified != ''">gmt_modified = #{gmtModified},</if>
+            <if test="isDeleted != null and isDeleted != ''">is_deleted = #{isDeleted},</if>
+        </trim>
+        <where>id = #{id}</where>
+    </update>
+
+    <select id="find" parameterType="category" resultMap="categoryResultMap">
+        SELECT 	<include refid="table_columns"/>
+        FROM 	`category`
+        <include refid="where"/>
+    </select>
+
+    <select id="findAll" resultMap="categoryResultMap">
+        select <include refid="table_columns" />
+        from `category`
+    </select>
+
+    <select id="findCount" resultType="java.lang.Long">
+        SELECT 	count(1)
+        FROM 	`category`
+        <include refid="where"/>
+    </select>
+
+    <select id="findById" resultMap="categoryResultMap" parameterType="long" >
+        select <include refid="table_columns" />
+        from `category`
+        where id = #{id}
+    </select>
+
+
     <insert id="addUseKey" useGeneratedKeys="true" parameterType="category" keyColumn="id" keyProperty="id">
         INSERT INTO `category`(parent_id,name) VALUES (#{parentId},#{name})
     </insert>
