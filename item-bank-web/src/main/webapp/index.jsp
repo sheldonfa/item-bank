@@ -8,6 +8,8 @@
 <title>主页</title>
 </head>
 <body>
-	<jsp:forward page="${pageContext.request.contextPath}/question/list"></jsp:forward>
+	<%
+		response.sendRedirect("/question/review_list");
+	%>
 </body>
 </html>

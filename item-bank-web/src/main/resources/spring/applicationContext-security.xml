@@ -40,7 +40,7 @@
             authentication-failure-url：登录失败跳转页面
         -->
         <security:form-login login-page="/login.jsp"
-                             default-target-url="/index.jsp" authentication-failure-url="/failer.jsp"></security:form-login>
+                             default-target-url="/question/review_list" authentication-failure-url="/failer.jsp"></security:form-login>
 
         <!--配置退出，说明：
             logout-success-url：成功退出后跳转地址

@@ -119,6 +119,12 @@
             $(document).on("click","#btn-create",function(){
                 var categoryId = $("#categoryIdInput").val();
                 var content = $("#markdown-textarea").val();
+                if(!categoryId){
+                    alert("请选择目录")
+                }
+                if(!content){
+                    alert("请填写内容")
+                }
                 network.addQuestion(categoryId,content).done(function(result){
                     if (result["code"] == 0) {
                         window.location.href = "/question/list_add"

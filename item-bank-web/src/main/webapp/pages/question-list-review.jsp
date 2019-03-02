@@ -113,7 +113,7 @@
                 var id = $(this).data("id");
                 network.remember(id, true).done(function(result){
                     if (result["code"] == 0) {
-                        window.location.href = "http://localhost:8080/question/review_list"
+                        window.location.reload()
                     }
                 })
             })
@@ -123,7 +123,7 @@
                 var id = $(this).data("id");
                 network.remember(id, false).done(function(result){
                     if (result["code"] == 0) {
-                        window.location.href = "http://localhost:8080/question/review_list"
+                        window.location.reload()
                     }
                 })
             })
