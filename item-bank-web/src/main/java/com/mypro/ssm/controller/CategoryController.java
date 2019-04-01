@@ -1,15 +1,15 @@
 package com.mypro.ssm.controller;
 
-import com.mypro.ssm.BusinessException;
 import com.mypro.ssm.common.Result;
 import com.mypro.ssm.po.Category;
+import com.mypro.ssm.po.Question;
 import com.mypro.ssm.service.CategoryService;
+import com.mypro.ssm.service.QuestionService;
 import com.mypro.ssm.vo.TreeNode;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-import sun.reflect.generics.tree.Tree;
 
 import java.util.List;
 
@@ -20,9 +20,23 @@ public class CategoryController {
     @Autowired
     private CategoryService categoryService;
 
+    @Autowired
+    private QuestionService questionService;
+
     @RequestMapping("show_list")
-    public String editList() {
+    public String showList() {
         return "category-list";
+    }
+
+    @RequestMapping("show_details")
+    public String showDetails(Long categoryId, Model model) {
+        // 查询question列表
+        List<Question> questions = questionService.findByCategory(categoryId);
+        model.addAttribute("questions", questions);
+        // 查询root category
+        List<Category> categories = categoryService.findRoot();
+        model.addAttribute("categories", categories);
+        return "category-details";
     }
 
     @RequestMapping(value = "", method = RequestMethod.POST)

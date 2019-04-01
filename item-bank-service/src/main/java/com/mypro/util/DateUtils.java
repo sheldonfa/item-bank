@@ -1,4 +1,4 @@
-package com.mypro.ssm.util;
+package com.mypro.util;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;

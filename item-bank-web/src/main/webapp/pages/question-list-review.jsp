@@ -56,7 +56,7 @@
                                                 <div class="col-sm-1">
                                                     <button class="btn-remember btn btn-danger btn-block"
                                                             data-id="${i.id}">
-                                                        记得
+                                                         记得
                                                     </button>
                                                 </div>
                                                 <div class="col-sm-1">

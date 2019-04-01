@@ -78,5 +78,5 @@ public interface QuestionMapper{
      */
     Question findById(Long id);
 
-    int deleteAll();
+    List<Question> findByCategory(Long categoryId);
 }

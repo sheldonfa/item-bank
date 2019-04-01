@@ -1,4 +1,4 @@
-package com.mypro.ssm.util;
+package com.mypro.util;
 
 import com.mypro.ssm.vo.TreeNode;
 

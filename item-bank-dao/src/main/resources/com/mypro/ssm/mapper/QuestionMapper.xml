@@ -5,14 +5,14 @@
 <mapper namespace="com.mypro.ssm.mapper.QuestionMapper">
 
     <resultMap id="questionResultMap" type="question">
-        <id property="id" column="id" />
-        <result property="categoryId" column="category_id" />
-        <result property="content" column="content" />
-        <result property="stage" column="stage" />
-        <result property="lastReviewTime" column="last_review_time" />
-        <result property="gmtCreate" column="gmt_create" />
-        <result property="gmtModified" column="gmt_modified" />
-        <result property="isDeleted" column="is_deleted" />
+        <id property="id" column="id"/>
+        <result property="categoryId" column="category_id"/>
+        <result property="content" column="content"/>
+        <result property="stage" column="stage"/>
+        <result property="lastReviewTime" column="last_review_time"/>
+        <result property="gmtCreate" column="gmt_create"/>
+        <result property="gmtModified" column="gmt_modified"/>
+        <result property="isDeleted" column="is_deleted"/>
     </resultMap>
 
     <sql id="table_columns">
@@ -52,8 +52,12 @@
 
     <!-- 适用于主键自增类型 -->
     <insert id="insert" parameterType="question" useGeneratedKeys="true" keyProperty="id">
-        insert into `question`( <include refid="table_columns" /> )
-        values ( <include refid="entity_properties" /> )
+        insert into `question`(
+        <include refid="table_columns"/>
+        )
+        values (
+        <include refid="entity_properties"/>
+        )
     </insert>
 
     <insert id="insertSelective" parameterType="question" useGeneratedKeys="true" keyProperty="id">
@@ -146,26 +150,35 @@
     </update>
 
     <select id="find" parameterType="question" resultMap="questionResultMap">
-        SELECT 	<include refid="table_columns"/>
-        FROM 	`question`
+        SELECT
+        <include refid="table_columns"/>
+        FROM `question`
         <include refid="where"/>
     </select>
 
     <select id="findAll" resultMap="questionResultMap">
-        select <include refid="table_columns" />
+        select
+        <include refid="table_columns"/>
         from `question`
     </select>
 
     <select id="findCount" resultType="java.lang.Long">
-        SELECT 	count(1)
-        FROM 	`question`
+        SELECT count(1)
+        FROM `question`
         <include refid="where"/>
     </select>
 
-    <select id="findById" resultMap="questionResultMap" parameterType="long" >
-        select <include refid="table_columns" />
+    <select id="findById" resultMap="questionResultMap" parameterType="long">
+        select
+        <include refid="table_columns"/>
         from `question`
         where id = #{id}
+    </select>
+    <select id="findByCategory" resultType="com.mypro.ssm.po.Question">
+        select
+        <include refid="table_columns"/>
+        from `question`
+        where category_id = #{categoryId}
     </select>
 
 </mapper>

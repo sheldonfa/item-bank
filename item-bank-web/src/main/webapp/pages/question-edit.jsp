@@ -133,39 +133,7 @@
             })
         }
     };
-    var network = {
-        selectChildCategory: function (id) {
-            var df = $.Deferred();
-            $.ajax({
-                type: "GET",
-                url: "/category/" + id + "/children",
-                contentType: "application/json; charset=utf-8",
-                success: function (result) {
-                    df.resolve(result)
-                }
-            });
-            return df;
-        },
-        editQuestion: function (id, categoryId, content) {
-            var df = $.Deferred();
-            var data = {
-                id: id,
-                categoryId: categoryId,
-                content: content
-            };
-            $.ajax({
-                type: "PUT",
-                url: "/question",
-                contentType: "application/json; charset=utf-8",
-                data: JSON.stringify(data),
-                dataType: "json",
-                success: function (result) {
-                    df.resolve(result)
-                }
-            });
-            return df;
-        }
-    }
 </script>
+<script src="../js/network.js"></script>
 </body>
 </html>

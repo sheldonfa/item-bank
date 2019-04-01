@@ -17,6 +17,7 @@ public class CodeMsg {
     public static CodeMsg FILE_PARSE_EXCEPTION = new CodeMsg(500106, "文件解析异常");
     // category操作
     public static CodeMsg NOT_EMPTY_CATEGORY_EXCEPTION = new CodeMsg(500201, "不是空目录");
+    public static CodeMsg NOT_LEAF_CATEGORY_EXCEPTION = new CodeMsg(500202, "不是叶子目录");
 
     private CodeMsg(int code, String message) {
         this.code = code;

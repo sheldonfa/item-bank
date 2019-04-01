@@ -1,4 +1,4 @@
-package com.mypro.ssm.util;
+package com.mypro.util;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;

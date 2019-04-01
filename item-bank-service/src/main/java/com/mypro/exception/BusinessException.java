@@ -1,4 +1,4 @@
-package com.mypro.ssm;
+package com.mypro.exception;
 
 import com.mypro.ssm.common.CodeMsg;
 

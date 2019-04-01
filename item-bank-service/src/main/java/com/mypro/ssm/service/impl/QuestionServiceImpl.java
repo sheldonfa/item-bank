@@ -1,9 +1,14 @@
 package com.mypro.ssm.service.impl;
 
+import com.mypro.exception.BusinessException;
+import com.mypro.ssm.common.CodeMsg;
+import com.mypro.ssm.query.QuestionQuery;
 import com.mypro.ssm.mapper.QuestionMapper;
+import com.mypro.ssm.po.Category;
 import com.mypro.ssm.po.Question;
+import com.mypro.ssm.service.CategoryService;
 import com.mypro.ssm.service.QuestionService;
-import com.mypro.ssm.util.Ebbinghaus;
+import com.mypro.util.Ebbinghaus;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -16,6 +21,9 @@ public class QuestionServiceImpl implements QuestionService {
 
     @Autowired
     private QuestionMapper questionMapper;
+
+    @Autowired
+    private CategoryService categoryService;
 
     @Override
     public Integer add(Question question) {
@@ -55,12 +63,31 @@ public class QuestionServiceImpl implements QuestionService {
     }
 
     @Override
-    public void remember(Long id,Boolean isRemember) {
+    public void remember(Long id, Boolean isRemember) {
         Question question = questionMapper.findById(id);
-        if(isRemember){
+        if (isRemember) {
             question.setStage(question.getStage() + 1);
         }
         question.setLastReviewTime(new Date());
         questionMapper.update(question);
+    }
+
+    @Override
+    public List<Question> findByCategory(Long categoryId) {
+        return questionMapper.findByCategory(categoryId);
+    }
+
+    @Override
+    public void updateByIds(QuestionQuery query) throws BusinessException {
+        List<Category> children = categoryService.findChildren(query.getCategoryId());
+        if(children!=null && children.size()>0){
+            throw new BusinessException(CodeMsg.NOT_LEAF_CATEGORY_EXCEPTION);
+        }
+        for (Long id : query.getIds()) {
+            Question question = new Question();
+            question.setId(id);
+            question.setCategoryId(query.getCategoryId());
+            questionMapper.update(question);
+        }
     }
 }

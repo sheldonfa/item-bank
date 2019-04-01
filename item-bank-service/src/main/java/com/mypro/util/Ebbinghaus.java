@@ -1,17 +1,17 @@
-package com.mypro.ssm.util;
+package com.mypro.util;
 
 import com.mypro.ssm.po.Question;
 
 public class Ebbinghaus {
     private static int forgettingCurve[] = {
-            5,            // 5分钟
             30,            // 30分钟
             12 * 60,        // 12小时
             1 * 24 * 60,    // 1天
             2 * 24 * 60,    // 2天
             4 * 24 * 60,    // 4天
             7 * 24 * 60,    // 7天
-            15 * 24 * 60    // 15天
+            15 * 24 * 60,    // 15天
+            30 * 24 * 60    // 30天
     };
 
     // 返回记忆曲线最大阶

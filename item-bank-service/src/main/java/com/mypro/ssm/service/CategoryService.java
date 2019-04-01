@@ -1,6 +1,6 @@
 package com.mypro.ssm.service;
 
-import com.mypro.ssm.BusinessException;
+import com.mypro.exception.BusinessException;
 import com.mypro.ssm.po.Category;
 import com.mypro.ssm.vo.TreeNode;
 

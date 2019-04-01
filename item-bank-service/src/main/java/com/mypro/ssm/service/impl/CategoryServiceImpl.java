@@ -1,19 +1,18 @@
 package com.mypro.ssm.service.impl;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.mypro.ssm.BusinessException;
+import com.mypro.exception.BusinessException;
 import com.mypro.ssm.common.CodeMsg;
 import com.mypro.ssm.mapper.CategoryMapper;
 import com.mypro.ssm.mapper.QuestionMapper;
 import com.mypro.ssm.po.Category;
 import com.mypro.ssm.po.Question;
 import com.mypro.ssm.service.CategoryService;
-import com.mypro.ssm.util.JSONUtil;
-import com.mypro.ssm.util.TreeBuilder;
+import com.mypro.util.JSONUtil;
+import com.mypro.util.TreeBuilder;
 import com.mypro.ssm.vo.TreeNode;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import tk.mybatis.mapper.entity.Example;
 
 import java.util.ArrayList;
 import java.util.HashMap;

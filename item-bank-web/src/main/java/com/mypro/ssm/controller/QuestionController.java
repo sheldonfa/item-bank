@@ -1,9 +1,10 @@
 package com.mypro.ssm.controller;
 
-import com.mypro.ssm.QuestionQuery;
+import com.mypro.exception.BusinessException;
 import com.mypro.ssm.common.Result;
 import com.mypro.ssm.po.Category;
 import com.mypro.ssm.po.Question;
+import com.mypro.ssm.query.QuestionQuery;
 import com.mypro.ssm.service.CategoryService;
 import com.mypro.ssm.service.QuestionService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -108,6 +109,25 @@ public class QuestionController {
     @ResponseBody
     public Result remember(@PathVariable Long id, @RequestBody QuestionQuery data) {
         questionService.remember(id, data.getRememberFlag());
+        return Result.success();
+    }
+
+    /**
+     * 转换分类
+     */
+    @RequestMapping(value = "updates", method = RequestMethod.PUT)
+    @ResponseBody
+    public Result updateByIds(@RequestBody QuestionQuery query) {
+        try {
+            if (query.getIds() != null
+                    && query.getIds().size() > 0
+                    && query.getCategoryId() != null) {
+                questionService.updateByIds(query);
+            }
+        } catch (BusinessException e) {
+            return Result.error(e.getCodeMsg());
+        }
+
         return Result.success();
     }
 }

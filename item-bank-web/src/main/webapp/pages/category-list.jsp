@@ -168,12 +168,10 @@
                             }
                         ]
                     }]
-                console.log(JSON.stringify(json))
-                console.log(JSON.stringify(json2))
                 if (result["code"] == 0) {
                     tree(json);
-                    // move();
 
+                    // move();
                     function tree(data) {
                         for (var i = 0; i < data.length; i++) {
                             var data2 = data[i];
@@ -186,6 +184,7 @@
                                     "<i class='btn-add glyphicon glyphicon-plus'  data-id='" + data[i].code + "'></i>" +
                                     "<i class='btn-edit glyphicon glyphicon-pencil'  data-id='" + data[i].code + "'></i>" +
                                     "<i class='btn-del glyphicon glyphicon-trash'  data-id='" + data[i].code + "'></i>" +
+                                    "<i class='btn-manage glyphicon glyphicon-cog'  data-id='" + data[i].code + "'></i>" +
                                     "</li>");
                             } else {
                                 var children = $("li[data-id='" + data[i].parentCode + "']").children("ul");
@@ -200,6 +199,7 @@
                                     "<i class='btn-add glyphicon glyphicon-plus' data-id='" + data[i].code + "'></i>" +
                                     "<i class='btn-edit glyphicon glyphicon-pencil' data-id='" + data[i].code + "'></i>" +
                                     "<i class='btn-del glyphicon glyphicon-trash'  data-id='" + data[i].code + "'></i>" +
+                                    "<i class='btn-manage glyphicon glyphicon-cog'  data-id='" + data[i].code + "'></i>" +
                                     "</li>")
                             }
                             for (var j = 0; j < data[i].child.length; j++) {
@@ -216,6 +216,7 @@
                                     "<i class='btn-add glyphicon glyphicon-plus' data-id='" + child.code + "'></i>" +
                                     "<i class='btn-edit glyphicon glyphicon-pencil' data-id='" + child.code + "'></i>" +
                                     "<i class='btn-del glyphicon glyphicon-trash'  data-id='" + child.code + "'></i>" +
+                                    "<i class='btn-manage glyphicon glyphicon-cog'  data-id='" + child.code + "'></i>" +
                                     "</li>")
                                 var child2 = data[i].child[j].child;
                                 tree(child2)
@@ -249,6 +250,7 @@
             this.btnEdit();
             this.btnDel();
             this.btnRootAdd();
+            this.btnManage();
         },
         btnAdd: function () {
             // 添加输入框
@@ -297,7 +299,7 @@
         btnDel: function () {
             $(document).on("click", ".btn-del", function () {
                 var id = $(this).data("id");
-                if(confirm("确定删除吗？")){
+                if (confirm("确定删除吗？")) {
                     network.delCategory(id).done(function (result) {
                         if (result["code"] == 0) {
                             window.location.href = "/category/show_list"
@@ -306,17 +308,32 @@
                 }
             })
         },
+        // 添加跟目录
         btnRootAdd: function () {
             $(document).on("click", "#btn-root-add", function () {
                 var name = $(this).prev().val();
-                network.addCategory(0,name).done(function (result) {
+                network.addCategory(0, name).done(function (result) {
                     if (result["code"] == 0) {
                         window.location.href = "/category/show_list"
                     }
                 });
             })
+        },
+        // 管理分类
+        btnManage: function () {
+            $(document).on("click", ".btn-manage", function () {
+                var id = $(this).data("id");
+                window.location.href = "/category/show_details?categoryId=" + id
+                // if(confirm("确定删除吗？")){
+                //     network.delCategory(id).done(function (result) {
+                //         if (result["code"] == 0) {
+                //             window.location.href = "/category/show_list"
+                //         }
+                //     });
+                // }
+            })
         }
-    }
+    };
 
     var network = {
         getTree: function () {
@@ -326,6 +343,7 @@
             });
             return df;
         },
+        // 添加分类
         addCategory: function (parentId, name) {
             if (parentId == null || name == null) {
                 alert("参数异常");
@@ -337,6 +355,7 @@
             });
             return df;
         },
+        // 编辑分类
         editCategory: function (id, name) {
             if (id == null || name == null) {
                 alert("参数异常");
@@ -368,6 +387,7 @@
             });
             return df;
         },
+        // 删除分类
         delCategory: function (id) {
             var df = $.Deferred();
             // ajax怎么支持restful，参考https://blog.csdn.net/liuyuanjiang109/article/details/78972644
@@ -380,7 +400,7 @@
                 }
             });
             return df;
-        }
+        },
     }
 </script>
 </body>
