@@ -125,6 +125,8 @@
                 if(!content){
                     alert("请填写内容")
                 }
+                console.log(network);
+                return;
                 network.addQuestion(categoryId,content).done(function(result){
                     if (result["code"] == 0) {
                         window.location.href = "/question/list_add"
@@ -134,6 +136,6 @@
         }
     };
 </script>
-<script src="../js/network.js"></script>
+<script src="/js/network.js"></script>
 </body>
 </html>

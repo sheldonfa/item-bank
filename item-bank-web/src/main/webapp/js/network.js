@@ -1,5 +1,5 @@
-(function(w){
-    w.network = {
+(function (w) {
+        w.network = {
             selectChildCategory: function (id) {
                 var df = $.Deferred();
                 $.ajax({
@@ -12,17 +12,17 @@
                 });
                 return df;
             },
-            addQuestion: function (categoryId,content) {
+            addQuestion: function (categoryId, content) {
                 var df = $.Deferred();
                 var data = {
                     categoryId: categoryId,
                     content: content
-                }
+                };
                 $.ajax({
                     type: "POST",
                     url: "/question",
                     contentType: "application/json; charset=utf-8",
-                    data:JSON.stringify(data),
+                    data: JSON.stringify(data),
                     success: function (result) {
                         df.resolve(result)
                     }
@@ -48,7 +48,7 @@
                 });
                 return df;
             },
-            updatesQuestion:function(data){
+            updatesQuestion: function (data) {
                 var df = $.Deferred();
                 $.ajax({
                     type: "PUT",

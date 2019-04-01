@@ -134,6 +134,6 @@
         }
     };
 </script>
-<script src="../js/network.js"></script>
+<script src="/js/network.js"></script>
 </body>
 </html>
