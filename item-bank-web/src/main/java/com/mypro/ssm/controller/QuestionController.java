@@ -62,6 +62,13 @@ public class QuestionController {
         return "question-edit";
     }
 
+    @RequestMapping(value = "listybycategory", method = RequestMethod.GET)
+    @ResponseBody
+    public Result listybycategory(Question question) {
+        List<Question> questions = questionService.findByCategory(question.getCategoryId());
+        return Result.success(questions);
+    }
+
     @RequestMapping(value = "", method = RequestMethod.POST)
     @ResponseBody
     public Result add(@RequestBody Question question) {
@@ -87,14 +94,18 @@ public class QuestionController {
     @RequestMapping("list")
     public String list(Model model) {
         List<Question> questions = questionService.findAll();
+        List<Category> rootCategories = categoryService.findRoot();
         model.addAttribute("questions", questions);
+        model.addAttribute("categories", rootCategories);
         return "question-list";
     }
 
     @RequestMapping("review_list")
     public String reviewList(Model model) {
         List<Question> reviews = questionService.findNeedReviews();
+        List<Category> rootCategories = categoryService.findRoot();
         model.addAttribute("questions", reviews);
+        model.addAttribute("categories", rootCategories);
         return "question-list-review";
     }
 

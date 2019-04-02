@@ -29,52 +29,56 @@
             <!-- 题库目录下拉列表 -->
             <div class="box box-primary">
                 <div class="box-body box-profile">
-                    <select class="form-control">
-                        <option>option 1</option>
-                        <option>option 2</option>
-                        <option>option 3</option>
-                        <option>option 4</option>
-                        <option>option 5</option>
-                    </select>
+                    <div class="col-md-2">
+                        <select id="sel1" data-select-level="1" class="form-control">
+                            <option>全部</option>
+                            <c:forEach items="${categories}" var="e">
+                                <option value="${e.id}">${e.name}</option>
+                            </c:forEach>
+                        </select>
+                    </div>
                 </div>
             </div>
 
-            <c:forEach items="${questions}" var="i" varStatus="s">
-                <div class="box">
-                    <div class="box-header">
-                        <h1>第${s.index+1}题</h1>
-                    </div>
-                    <div class="box-body">
-                        <div class="nav-tabs-custom">
-                            <div class="tab-content">
-                                <div class="active tab-pane" id="activity">
-                                    <!-- Post -->
-                                    <div class="post">
-                                        <p class="question-md">${i.content}</p>
-                                        <form class="form-horizontal">
-                                            <div class="form-group margin-bottom-none">
-                                                <div class="col-sm-1">
-                                                    <button class="btn-remember btn btn-danger btn-block"
-                                                            data-id="${i.id}">
-                                                         记得
-                                                    </button>
+            <div id="question-list-div">
+                <c:forEach items="${questions}" var="i" varStatus="s">
+                    <div class="box">
+                        <div class="box-header">
+                            <h1>第${s.index+1}题</h1>
+                        </div>
+                        <div class="box-body">
+                            <div class="nav-tabs-custom">
+                                <div class="tab-content">
+                                    <div class="active tab-pane" id="activity">
+                                        <!-- Post -->
+                                        <div class="post">
+                                            <p class="question-md">${i.content}</p>
+                                            <form class="form-horizontal">
+                                                <div class="form-group margin-bottom-none">
+                                                    <div class="col-sm-1">
+                                                        <button class="btn-remember btn btn-danger btn-block"
+                                                                data-id="${i.id}">
+                                                            记得
+                                                        </button>
+                                                    </div>
+                                                    <div class="col-sm-1">
+                                                        <button class="btn-not-remember btn btn-block"
+                                                                data-id="${i.id}">
+                                                            不记得
+                                                        </button>
+                                                    </div>
                                                 </div>
-                                                <div class="col-sm-1">
-                                                    <button class="btn-not-remember btn btn-block" data-id="${i.id}">
-                                                        不记得
-                                                    </button>
-                                                </div>
-                                            </div>
-                                        </form>
+                                            </form>
+                                        </div>
                                     </div>
                                 </div>
+                                <!-- /.tab-content -->
                             </div>
-                            <!-- /.tab-content -->
+                            <!-- /.nav-tabs-custom -->
                         </div>
-                        <!-- /.nav-tabs-custom -->
                     </div>
-                </div>
-            </c:forEach>
+                </c:forEach>
+            </div>
         </section>
         <!-- /.content -->
     </div>
@@ -85,33 +89,19 @@
 <jsp:include page="common/script.jsp"/>
 <script>
     $(function () {
-        setup.init();
+        markdowntohtml();
         action.bind();
     });
-    var setup = {
-        init: function () {
-            this.markdownFormat()
-        },
-        markdownFormat: function () {
-            markdowntohtml()
-
-            function markdowntohtml() {
-                var converter = new showdown.Converter()
-                $(".question-md").each(function () {
-                    $(this).html(converter.makeHtml($.trim($(this).html())))
-                });
-            }
-        }
-    };
     var action = {
         bind: function () {
             this.btnRemember();
             this.btnNotRemember();
+            this.changeSelect();
         },
         btnRemember: function () {
             $(document).on("click", ".btn-remember", function () {
                 var id = $(this).data("id");
-                network.remember(id, true).done(function(result){
+                network.remember(id, true).done(function (result) {
                     if (result["code"] == 0) {
                         window.location.reload()
                     }
@@ -121,34 +111,99 @@
         btnNotRemember: function () {
             $(document).on("click", ".btn-not-remember", function () {
                 var id = $(this).data("id");
-                network.remember(id, false).done(function(result){
+                network.remember(id, false).done(function (result) {
                     if (result["code"] == 0) {
                         window.location.reload()
                     }
                 })
             })
+        },
+        // 修改类目标签
+        changeSelect: function () {
+            $(document).on("change", "#sel1,#sel2,#sel3,#sel4,#sel5", function () {
+                var target = $(this);
+                var level = $(this).data("select-level");
+                var id = $(this).val();
+                // 根据categoryid查询question列表
+                network.listQuestion(id).done(function (result) {
+                    if (result["code"] == 0) {
+                        var data = result["data"];
+                        $("#question-list-div").empty();
+                        for (var i in data) {
+                            var e = data[i];
+                            var q =
+                                ' <div class="box">\n' +
+                                '                        <div class="box-header">\n' +
+                                '                            <h1>第'+(i+1)+'题</h1>\n' +
+                                '                        </div>\n' +
+                                '                        <div class="box-body">\n' +
+                                '                            <div class="nav-tabs-custom">\n' +
+                                '                                <div class="tab-content">\n' +
+                                '                                    <div class="active tab-pane" id="activity">\n' +
+                                '                                        <!-- Post -->\n' +
+                                '                                        <div class="post">\n' +
+                                '                                            <p class="question-md">'+e.content+'</p>\n' +
+                                '                                            <form class="form-horizontal">\n' +
+                                '                                                <div class="form-group margin-bottom-none">\n' +
+                                '                                                    <div class="col-sm-1">\n' +
+                                '                                                        <button class="btn-remember btn btn-danger btn-block"\n' +
+                                '                                                                data-id="'+e.id+'">\n' +
+                                '                                                            记得\n' +
+                                '                                                        </button>\n' +
+                                '                                                    </div>\n' +
+                                '                                                    <div class="col-sm-1">\n' +
+                                '                                                        <button class="btn-not-remember btn btn-block"\n' +
+                                '                                                                data-id="'+e.id+'">\n' +
+                                '                                                            不记得\n' +
+                                '                                                        </button>\n' +
+                                '                                                    </div>\n' +
+                                '                                                </div>\n' +
+                                '                                            </form>\n' +
+                                '                                        </div>\n' +
+                                '                                    </div>\n' +
+                                '                                </div>\n' +
+                                '                                <!-- /.tab-content -->\n' +
+                                '                            </div>\n' +
+                                '                            <!-- /.nav-tabs-custom -->\n' +
+                                '                        </div>\n' +
+                                '                    </div>'
+                            $("#question-list-div").append(q);
+                        }
+                    }
+                    markdowntohtml()
+                });
+                network.selectChildCategory(id).done(function (result) {
+                    if (result["code"] == 0) {
+                        var children = result["data"];
+                        // 有子节点
+                        if (children.length > 0) {
+                            var subSelect = $("#sel" + eval(level + 1));
+                            var newdiv = ' <div class="col-md-2">' +
+                                '<select id="sel' + eval(level + 1) + '" data-select-level="' + eval(level + 1) + '" class="form-control" data-placeholder="选择分类">' +
+                                '<option>全部</option>'
+                            for (var i in children) {
+                                newdiv += '                           <option value="' + children[i].id + '">' + children[i].name + '</option>'
+                            }
+                            newdiv += '</select>' +
+                                '</div>';
+                            // 已经存在这个下拉框
+                            if (subSelect[0]) {
+                                subSelect.parent().before(newdiv);
+                                subSelect.parent().remove();
+                            } else {
+                                console.log(newdiv);
+                                target.parent().after($(newdiv))
+                            }
+                        }
+                    }
+                });
+            })
         }
 
-    }
-    var network = {
-        remember: function (id, flag) {
-            var df = $.Deferred();
-            var data = {
-                rememberFlag: flag
-            };
-            $.ajax({
-                type: "PUT",
-                url: "/question/" + id + "/remember",
-                contentType: "application/json; charset=utf-8",
-                data: JSON.stringify(data),
-                success: function (result) {
-                    df.resolve(result)
-                }
-            });
-            return df;
-        }
     }
 
 </script>
+<script src="/js/network.js"></script>
+<script src="/js/common.js"></script>
 </body>
 </html>

@@ -29,51 +29,55 @@
             <!-- 题库目录下拉列表 -->
             <div class="box box-primary">
                 <div class="box-body box-profile">
-                    <select class="form-control">
-                        <option>option 1</option>
-                        <option>option 2</option>
-                        <option>option 3</option>
-                        <option>option 4</option>
-                        <option>option 5</option>
-                    </select>
+                    <div class="col-md-2">
+                        <select id="sel1" data-select-level="1" class="form-control">
+                            <option>全部</option>
+                            <c:forEach items="${categories}" var="e">
+                                <option value="${e.id}">${e.name}</option>
+                            </c:forEach>
+                        </select>
+                    </div>
                 </div>
             </div>
 
-            <c:forEach items="${questions}" var="i" varStatus="s">
-                <div class="box" id="${i.id}">
-                    <div class="box-header">
-                        <h1>第${s.index+1}题</h1>
-                    </div>
-                    <div class="box-body">
-                        <div class="nav-tabs-custom">
-                            <div class="tab-content">
-                                <div class="active tab-pane" id="activity">
-                                    <!-- Post -->
-                                    <div class="post">
-                                        <p class="question-md">${i.content}</p>
-                                        <form class="form-horizontal">
-                                            <div class="form-group margin-bottom-none">
-                                                <div class="col-sm-3">
-                                                    <button type="button"
-                                                            class="btn btn-primary btn-block btn-sm btn-edit-js">编辑
-                                                    </button>
+            <div id="question-list-div">
+                <c:forEach items="${questions}" var="i" varStatus="s">
+                    <div class="box" id="${i.id}">
+                        <div class="box-header">
+                            <h1>第${s.index+1}题</h1>
+                        </div>
+                        <div class="box-body">
+                            <div class="nav-tabs-custom">
+                                <div class="tab-content">
+                                    <div class="active tab-pane" id="activity">
+                                        <!-- Post -->
+                                        <div class="post">
+                                            <p class="question-md">${i.content}</p>
+                                            <form class="form-horizontal">
+                                                <div class="form-group margin-bottom-none">
+                                                    <div class="col-sm-3">
+                                                        <button type="button"
+                                                                class="btn btn-primary btn-block btn-sm btn-edit-js">编辑
+                                                        </button>
+                                                    </div>
+                                                    <div class="col-sm-3">
+                                                        <button type="button" id="${i.id}"
+                                                                class="btn btn-danger btn-block btn-sm btn-delete-js">删除
+                                                        </button>
+                                                    </div>
                                                 </div>
-                                                <div class="col-sm-3">
-                                                    <button type="button" id="${i.id}"
-                                                            class="btn btn-danger btn-block btn-sm btn-delete-js">删除
-                                                    </button>
-                                                </div>
-                                            </div>
-                                        </form>
+                                            </form>
+                                        </div>
                                     </div>
                                 </div>
+                                <!-- /.tab-content -->
                             </div>
-                            <!-- /.tab-content -->
+                            <!-- /.nav-tabs-custom -->
                         </div>
-                        <!-- /.nav-tabs-custom -->
                     </div>
-                </div>
-            </c:forEach>
+                </c:forEach>
+            </div>
+
         </section>
         <!-- /.content -->
     </div>
@@ -84,34 +88,114 @@
 <jsp:include page="common/script.jsp"/>
 <script>
     $(function () {
-        markdowntohtml()
-
-        $(".btn-edit-js").click(function () {
-            var id = $($(this).parents(".box")[0]).attr("id");
-            window.location.href = "${pageContext.request.contextPath}/question/list_edit/" + id;
-        })
-
+        markdowntohtml();
+        action.bind();
+    });
+    var action = {
+        bind: function () {
+            this.btnEdit();
+            this.btnDelete();
+            this.changeSelect();
+        },
+        btnEdit: function () {
+            $(".btn-edit-js").click(function () {
+                var id = $($(this).parents(".box")[0]).attr("id");
+                window.location.href = "${pageContext.request.contextPath}/question/list_edit/" + id;
+            })
+        },
         /*删除按钮*/
-        $(function () {
+        btnDelete: function () {
             $(".btn-delete-js").click(function () {
-                if(confirm("确定要删除吗？")){
-                    $.post("/question/del/"+$(this).attr("id"),function (result) {
-                        if(result["code"]==0){
+                if (confirm("确定要删除吗？")) {
+                    $.post("/question/del/" + $(this).attr("id"), function (result) {
+                        if (result["code"] == 0) {
                             window.location.href = "/question/list";
                         }
                     });
                 }
             })
-        })
-    });
-
-    function markdowntohtml() {
-        var converter = new showdown.Converter()
-        $(".question-md").each(function () {
-            $(this).html(converter.makeHtml($.trim($(this).html())))
-        });
+        },
+        changeSelect: function () {
+            $(document).on("change", "#sel1,#sel2,#sel3,#sel4,#sel5", function () {
+                var target = $(this);
+                var level = $(this).data("select-level");
+                var id = $(this).val();
+                // 根据categoryid查询question列表
+                network.listQuestion(id).done(function (result) {
+                    if (result["code"] == 0) {
+                        var data = result["data"];
+                        $("#question-list-div").empty();
+                        for (var i in data) {
+                            var e = data[i];
+                            var q =
+                                '<div class="box" id="' + e.id + '">\n' +
+                                '                        <div class="box-header">\n' +
+                                '                            <h1>第' + (i + 1) + '题</h1>\n' +
+                                '                        </div>\n' +
+                                '                        <div class="box-body">\n' +
+                                '                            <div class="nav-tabs-custom">\n' +
+                                '                                <div class="tab-content">\n' +
+                                '                                    <div class="active tab-pane" id="activity">\n' +
+                                '                                        <!-- Post -->\n' +
+                                '                                        <div class="post">\n' +
+                                '                                            <p class="question-md">' + e.content + '</p>\n' +
+                                '                                            <form class="form-horizontal">\n' +
+                                '                                                <div class="form-group margin-bottom-none">\n' +
+                                '                                                    <div class="col-sm-3">\n' +
+                                '                                                        <button type="button"\n' +
+                                '                                                                class="btn btn-primary btn-block btn-sm btn-edit-js">编辑\n' +
+                                '                                                        </button>\n' +
+                                '                                                    </div>\n' +
+                                '                                                    <div class="col-sm-3">\n' +
+                                '                                                        <button type="button" id="' + e.id + '"\n' +
+                                '                                                                class="btn btn-danger btn-block btn-sm btn-delete-js">删除\n' +
+                                '                                                        </button>\n' +
+                                '                                                    </div>\n' +
+                                '                                                </div>\n' +
+                                '                                            </form>\n' +
+                                '                                        </div>\n' +
+                                '                                    </div>\n' +
+                                '                                </div>\n' +
+                                '                                <!-- /.tab-content -->\n' +
+                                '                            </div>\n' +
+                                '                            <!-- /.nav-tabs-custom -->\n' +
+                                '                        </div>\n' +
+                                '                    </div>'
+                            $("#question-list-div").append(q);
+                        }
+                    }
+                    markdowntohtml()
+                });
+                network.selectChildCategory(id).done(function (result) {
+                    if (result["code"] == 0) {
+                        var children = result["data"];
+                        // 有子节点
+                        if (children.length > 0) {
+                            var subSelect = $("#sel" + eval(level + 1));
+                            var newdiv = ' <div class="col-md-2">' +
+                                '<select id="sel' + eval(level + 1) + '" data-select-level="' + eval(level + 1) + '" class="form-control" data-placeholder="选择分类">' +
+                                '<option>全部</option>'
+                            for (var i in children) {
+                                newdiv += '                           <option value="' + children[i].id + '">' + children[i].name + '</option>'
+                            }
+                            newdiv += '</select>' +
+                                '</div>';
+                            // 已经存在这个下拉框
+                            if (subSelect[0]) {
+                                subSelect.parent().before(newdiv);
+                                subSelect.parent().remove();
+                            } else {
+                                console.log(newdiv);
+                                target.parent().after($(newdiv))
+                            }
+                        }
+                    }
+                });
+            })
+        }
     }
-
 </script>
+<script src="/js/network.js"></script>
+<script src="/js/common.js"></script>
 </body>
 </html>

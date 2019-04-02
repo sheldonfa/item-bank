@@ -11,6 +11,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Controller
@@ -81,7 +82,10 @@ public class CategoryController {
     @RequestMapping("{id}/children")
     @ResponseBody
     public Result children(@PathVariable Long id) {
-        List<Category> children = categoryService.findChildren(id);
+        List<Category> children = new ArrayList<>();
+        if (id != null) {
+            children = categoryService.findChildren(id);
+        }
         return Result.success(children);
     }
 }

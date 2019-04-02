@@ -1,5 +1,18 @@
 (function (w) {
         w.network = {
+            listQuestion: function (id) {
+                var df = $.Deferred();
+                $.ajax({
+                    type: "GET",
+                    url: "/question/listybycategory?categoryId=" + id,
+                    contentType: "application/json; charset=utf-8",
+                    success: function (result) {
+                        df.resolve(result)
+                    }
+                });
+                return df;
+
+            },
             selectChildCategory: function (id) {
                 var df = $.Deferred();
                 $.ajax({
@@ -56,6 +69,22 @@
                     contentType: "application/json; charset=utf-8",
                     data: JSON.stringify(data),
                     dataType: "json",
+                    success: function (result) {
+                        df.resolve(result)
+                    }
+                });
+                return df;
+            },
+            remember: function (id, flag) {
+                var df = $.Deferred();
+                var data = {
+                    rememberFlag: flag
+                };
+                $.ajax({
+                    type: "PUT",
+                    url: "/question/" + id + "/remember",
+                    contentType: "application/json; charset=utf-8",
+                    data: JSON.stringify(data),
                     success: function (result) {
                         df.resolve(result)
                     }
