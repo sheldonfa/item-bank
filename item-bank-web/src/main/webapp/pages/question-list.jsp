@@ -104,14 +104,14 @@
             this.changeSelect();
         },
         btnEdit: function () {
-            $(".btn-edit-js").click(function () {
+            $(document).on("click", ".btn-edit-js", function () {
                 var id = $($(this).parents(".box")[0]).attr("id");
                 window.location.href = "${pageContext.request.contextPath}/question/list_edit/" + id;
             })
         },
         /*删除按钮*/
         btnDelete: function () {
-            $(".btn-delete-js").click(function () {
+            $(document).on("click", ".btn-delete-js", function () {
                 if (confirm("确定要删除吗？")) {
                     $.post("/question/del/" + $(this).attr("id"), function (result) {
                         if (result["code"] == 0) {
@@ -128,7 +128,7 @@
                 var parentId = $(this).data("parent-id");
                 // 根据categoryid查询question列表
                 var targetId = id;
-                if (targetId == 0) {
+                if (targetId == -1) {
                     targetId = parentId;
                 }
                 network.listQuestion(targetId).done(function (result) {
@@ -176,7 +176,14 @@
                     }
                     markdowntohtml()
                 });
-                if (id != 0) {
+
+                // 如果是全部目录，删除子节点
+                if (id == -1) {
+                    var subSelect = $("#sel" + eval(level + 1));
+                    subSelect.parent().remove();
+                }
+                // 不是全部目录的情况下，查询并更新子节点
+                else {
                     network.selectChildCategory(id, 1).done(function (result) {
                         if (result["code"] == 0) {
                             dom.insertChildCategory(result["data"], level)
@@ -195,7 +202,7 @@
                 var subSelect = $("#sel" + eval(level + 1));
                 var newdiv = ' <div class="col-md-2">' +
                     '<select id="sel' + eval(level + 1) + '" data-select-level="' + eval(level + 1) + '" class="form-control" data-parent-id="' + children[0].parentId + '" data-placeholder="选择分类">' +
-                    '<option value="0">全部</option>'
+                    '<option value="-1">全部</option>'
                 for (var i in children) {
                     newdiv += '                           <option value="' + children[i].id + '">' + children[i].name + "(" + children[i].questionCount + ")" + '</option>'
                 }

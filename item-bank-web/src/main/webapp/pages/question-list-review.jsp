@@ -91,7 +91,7 @@
             markdowntohtml();
             // 初始化根目录
             var countType = 2;
-            network.selectChildCategory(0,countType).done(function (result) {
+            network.selectChildCategory(0, countType).done(function (result) {
                 if (result["code"] == 0) {
                     dom.insertChildCategory(result["data"], 0);
                 }
@@ -131,7 +131,13 @@
                 var level = $(this).data("select-level");
                 var id = $(this).val();
                 // 根据categoryid查询question列表
-                network.listReviewQuestion(id).done(function (result) {
+                var parentId = $(this).data("parent-id");
+                var targetId = id;
+                if (targetId == -1) {
+                    targetId = parentId;
+                }
+                // 根据categoryid查询question列表
+                network.listReviewQuestion(targetId).done(function (result) {
                     if (result["code"] == 0) {
                         var data = result["data"];
                         $("#question-list-div").empty();
@@ -178,8 +184,14 @@
                     }
                     markdowntohtml()
                 });
-                if (id != 0) {
-                    network.selectChildCategory(id,2).done(function (result) {
+                // 如果是全部目录，删除子节点
+                if (id == -1) {
+                    var subSelect = $("#sel" + eval(level + 1));
+                    subSelect.parent().remove();
+                }
+                // 不是全部目录的情况下，查询并更新子节点
+                else {
+                    network.selectChildCategory(id, 2).done(function (result) {
                         if (result["code"] == 0) {
                             dom.insertChildCategory(result["data"], level)
                         }
@@ -197,7 +209,7 @@
                 var subSelect = $("#sel" + eval(level + 1));
                 var newdiv = ' <div class="col-md-2">' +
                     '<select id="sel' + eval(level + 1) + '" data-select-level="' + eval(level + 1) + '" class="form-control" data-parent-id="' + children[0].parentId + '" data-placeholder="选择分类">' +
-                    '<option value="0">全部</option>'
+                    '<option value="-1">全部</option>'
                 for (var i in children) {
                     newdiv += '                           <option value="' + children[i].id + '">' + children[i].name + "(" + children[i].questionCount + ")" + '</option>'
                 }
