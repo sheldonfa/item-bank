@@ -3,6 +3,7 @@ package com.mypro.ssm.controller;
 import com.mypro.ssm.common.Result;
 import com.mypro.ssm.po.Category;
 import com.mypro.ssm.po.Question;
+import com.mypro.ssm.query.QuestionQuery;
 import com.mypro.ssm.service.CategoryService;
 import com.mypro.ssm.service.QuestionService;
 import com.mypro.ssm.vo.TreeNode;
@@ -32,7 +33,7 @@ public class CategoryController {
     @RequestMapping("show_details")
     public String showDetails(Long categoryId, Model model) {
         // 查询question列表
-        List<Question> questions = questionService.findByCategory(categoryId);
+        List<Question> questions = questionService.findByCategoryId(categoryId);
         model.addAttribute("questions", questions);
         // 查询root category
         List<Category> categories = categoryService.findRoot();
@@ -79,12 +80,29 @@ public class CategoryController {
         return Result.success(categoryies);
     }
 
+    @RequestMapping("root")
+    @ResponseBody
+    public Result root() {
+        List<Category> roots = categoryService.findRoot();
+        for (Category c : roots) {
+            Long questionCount = questionService.findCountByCategory(c.getId(), true);
+            c.setQuestionCount(questionCount);
+        }
+        return Result.success(roots);
+    }
+
     @RequestMapping("{id}/children")
     @ResponseBody
-    public Result children(@PathVariable Long id) {
+    public Result children(@PathVariable Long id, QuestionQuery query) {
         List<Category> children = new ArrayList<>();
         if (id != null) {
+            // 查询子目录
             children = categoryService.findChildren(id);
+            // 查询数量
+            for (Category c : children) {
+                Long questionCount = questionService.findCountByCategory(c.getId(), true,query.getCountType());
+                c.setQuestionCount(questionCount);
+            }
         }
         return Result.success(children);
     }

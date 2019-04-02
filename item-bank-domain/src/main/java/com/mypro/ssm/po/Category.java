@@ -14,6 +14,11 @@ public class Category {
      */
     private Integer selected;
 
+    /**
+     * question数量
+     */
+    private Long questionCount;
+
     public Integer getSelected() {
         return selected;
     }
@@ -70,6 +75,14 @@ public class Category {
         isDeleted = deleted;
     }
 
+    public Long getQuestionCount() {
+        return questionCount;
+    }
+
+    public void setQuestionCount(Long questionCount) {
+        this.questionCount = questionCount;
+    }
+
     @Override
     public String toString() {
         return "Category{" +
@@ -79,6 +92,8 @@ public class Category {
                 ", gmtCreate=" + gmtCreate +
                 ", gmtModified=" + gmtModified +
                 ", isDeleted=" + isDeleted +
+                ", selected=" + selected +
+                ", questionCount=" + questionCount +
                 '}';
     }
 }

@@ -29,14 +29,7 @@
             <!-- 题库目录下拉列表 -->
             <div class="box box-primary">
                 <div class="box-body box-profile">
-                    <div class="col-md-2">
-                        <select id="sel1" data-select-level="1" class="form-control">
-                            <option>全部</option>
-                            <c:forEach items="${categories}" var="e">
-                                <option value="${e.id}">${e.name}</option>
-                            </c:forEach>
-                        </select>
-                    </div>
+                    <%--select option--%>
                 </div>
             </div>
 
@@ -88,9 +81,22 @@
 <jsp:include page="common/script.jsp"/>
 <script>
     $(function () {
-        markdowntohtml();
+        setup.init();
         action.bind();
     });
+    var setup = {
+        init: function () {
+            // 初始化markdown
+            markdowntohtml();
+            // 初始化根目录
+            var countType = 1;
+            network.selectChildCategory(0, countType).done(function (result) {
+                if (result["code"] == 0) {
+                    dom.insertChildCategory(result["data"], 0);
+                }
+            })
+        }
+    }
     var action = {
         bind: function () {
             this.btnEdit();
@@ -117,11 +123,15 @@
         },
         changeSelect: function () {
             $(document).on("change", "#sel1,#sel2,#sel3,#sel4,#sel5", function () {
-                var target = $(this);
                 var level = $(this).data("select-level");
                 var id = $(this).val();
+                var parentId = $(this).data("parent-id");
                 // 根据categoryid查询question列表
-                network.listQuestion(id).done(function (result) {
+                var targetId = id;
+                if (targetId == 0) {
+                    targetId = parentId;
+                }
+                network.listQuestion(targetId).done(function (result) {
                     if (result["code"] == 0) {
                         var data = result["data"];
                         $("#question-list-div").empty();
@@ -166,32 +176,45 @@
                     }
                     markdowntohtml()
                 });
-                network.selectChildCategory(id).done(function (result) {
-                    if (result["code"] == 0) {
-                        var children = result["data"];
-                        // 有子节点
-                        if (children.length > 0) {
-                            var subSelect = $("#sel" + eval(level + 1));
-                            var newdiv = ' <div class="col-md-2">' +
-                                '<select id="sel' + eval(level + 1) + '" data-select-level="' + eval(level + 1) + '" class="form-control" data-placeholder="选择分类">' +
-                                '<option>全部</option>'
-                            for (var i in children) {
-                                newdiv += '                           <option value="' + children[i].id + '">' + children[i].name + '</option>'
-                            }
-                            newdiv += '</select>' +
-                                '</div>';
-                            // 已经存在这个下拉框
-                            if (subSelect[0]) {
-                                subSelect.parent().before(newdiv);
-                                subSelect.parent().remove();
-                            } else {
-                                console.log(newdiv);
-                                target.parent().after($(newdiv))
-                            }
+                if (id != 0) {
+                    network.selectChildCategory(id, 1).done(function (result) {
+                        if (result["code"] == 0) {
+                            dom.insertChildCategory(result["data"], level)
                         }
-                    }
-                });
+                    });
+                }
             })
+        }
+    };
+    var dom = {
+        // 插入子目录节点
+        insertChildCategory: function (data, level) {
+            var children = data;
+            // 有子节点
+            if (children.length > 0) {
+                var subSelect = $("#sel" + eval(level + 1));
+                var newdiv = ' <div class="col-md-2">' +
+                    '<select id="sel' + eval(level + 1) + '" data-select-level="' + eval(level + 1) + '" class="form-control" data-parent-id="' + children[0].parentId + '" data-placeholder="选择分类">' +
+                    '<option value="0">全部</option>'
+                for (var i in children) {
+                    newdiv += '                           <option value="' + children[i].id + '">' + children[i].name + "(" + children[i].questionCount + ")" + '</option>'
+                }
+                newdiv += '</select>' +
+                    '</div>';
+                // 已经存在这个下拉框
+                if (subSelect[0]) {
+                    subSelect.parent().before(newdiv);
+                    subSelect.parent().remove();
+                } else {
+                    console.log(newdiv);
+                    $("body > div > div > section.content > div.box.box-primary > div").append($(newdiv))
+                }
+            } else {
+                var subSelect = $("#sel" + eval(level + 1));
+                if (subSelect[0]) {
+                    subSelect.parent().remove();
+                }
+            }
         }
     }
 </script>

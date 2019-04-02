@@ -1,10 +1,10 @@
 (function (w) {
         w.network = {
-            listQuestion: function (id) {
+            listQuestion: function (categoryId) {
                 var df = $.Deferred();
                 $.ajax({
                     type: "GET",
-                    url: "/question/listybycategory?categoryId=" + id,
+                    url: "/question/listbycategory?categoryId=" + categoryId + "&recursion=" + true,
                     contentType: "application/json; charset=utf-8",
                     success: function (result) {
                         df.resolve(result)
@@ -13,11 +13,24 @@
                 return df;
 
             },
-            selectChildCategory: function (id) {
+            listReviewQuestion: function (categoryId) {
                 var df = $.Deferred();
                 $.ajax({
                     type: "GET",
-                    url: "/category/" + id + "/children",
+                    url: "/question/listreviewbycategory?categoryId=" + categoryId,
+                    contentType: "application/json; charset=utf-8",
+                    success: function (result) {
+                        df.resolve(result)
+                    }
+                });
+                return df;
+            },
+
+            selectChildCategory: function (id, countType) {
+                var df = $.Deferred();
+                $.ajax({
+                    type: "GET",
+                    url: "/category/" + id + "/children?countType=" + countType + "&recursion=" + true,
                     contentType: "application/json; charset=utf-8",
                     success: function (result) {
                         df.resolve(result)

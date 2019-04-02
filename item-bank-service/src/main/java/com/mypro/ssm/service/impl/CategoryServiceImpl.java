@@ -30,101 +30,111 @@ public class CategoryServiceImpl implements CategoryService {
 
     /**
      * 添加
+     *
      * @author fangxin
      * @date 2019-2-26
      */
     @Override
-    public Integer insert(Category category){
+    public Integer insert(Category category) {
         return categoryMapper.insert(category);
     }
 
     /**
      * 选择性添加
+     *
      * @author fangxin
      * @date 2019-2-26
      */
     @Override
-    public Integer insertSelective(Category category){
+    public Integer insertSelective(Category category) {
         return categoryMapper.insertSelective(category);
     }
 
     /**
      * 根据主键删除
+     *
      * @author fangxin
      * @date 2019-2-26
      */
     @Override
-    public Integer deleteById(Long id){
+    public Integer deleteById(Long id) {
         return categoryMapper.deleteById(id);
     }
 
     /**
      * 根据主键数组删除
+     *
      * @author fangxin
      * @date 2019-2-26
      */
     @Override
-    public Integer deleteByIds(Long[] ids){
+    public Integer deleteByIds(Long[] ids) {
         return categoryMapper.deleteByIds(ids);
     }
 
     /**
      * 条件删除
+     *
      * @author fangxin
      * @date 2019-2-26
      */
     @Override
-    public Integer delete(Category category){
+    public Integer delete(Category category) {
         return categoryMapper.delete(category);
     }
 
     /**
      * 更新
+     *
      * @author fangxin
      * @date 2019-2-26
      */
     @Override
-    public Integer update(Category category){
+    public Integer update(Category category) {
         return categoryMapper.update(category);
     }
 
     /**
      * 查询
+     *
      * @author fangxin
      * @date 2019-2-26
      */
     @Override
-    public List<Category> find(Category category){
+    public List<Category> find(Category category) {
         return categoryMapper.find(category);
     }
 
     /**
      * 查询全部
+     *
      * @author fangxin
      * @date 2019-2-26
      */
     @Override
-    public List<Category> findAll(){
+    public List<Category> findAll() {
         return categoryMapper.findAll();
     }
 
     /**
      * 查询数量
+     *
      * @author fangxin
      * @date 2019-2-26
      */
     @Override
-    public Long findCount(Category category){
+    public Long findCount(Category category) {
         return categoryMapper.findCount(category);
     }
 
     /**
      * 根据主键查询
+     *
      * @author fangxin
      * @date 2019-2-26
      */
     @Override
-    public Category findById(Long id){
+    public Category findById(Long id) {
         return categoryMapper.findById(id);
     }
 
@@ -181,10 +191,26 @@ public class CategoryServiceImpl implements CategoryService {
 
     @Override
     public List<Category> findChildren(Long id) {
+        return findChildren(id, false);
+    }
+
+    @Override
+    public List<Category> findChildren(Long id, Boolean recursion) {
         Category category = new Category();
         category.setParentId(id);
 
         return categoryMapper.find(category);
+    }
+
+    @Override
+    public List<Long> findAllChildrenId(Long parentId) {
+        List<Long> ids = new ArrayList<>();
+        List<Category> children = findByParentId(parentId);
+        for (Category c : children) {
+            ids.add(c.getId());
+            ids.addAll(findAllChildrenId(c.getId()));
+        }
+        return ids;
     }
 
     private List<Category> findByParentId(Long parentId) {

@@ -174,7 +174,7 @@
         from `question`
         where id = #{id}
     </select>
-    <select id="findByCategory" resultType="com.mypro.ssm.po.Question">
+    <select id="findByCategory" resultMap="questionResultMap">
         select
         <include refid="table_columns"/>
         from `question`

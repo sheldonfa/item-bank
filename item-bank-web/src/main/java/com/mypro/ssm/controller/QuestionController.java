@@ -62,10 +62,17 @@ public class QuestionController {
         return "question-edit";
     }
 
-    @RequestMapping(value = "listybycategory", method = RequestMethod.GET)
+    @RequestMapping(value = "listbycategory", method = RequestMethod.GET)
     @ResponseBody
-    public Result listybycategory(Question question) {
-        List<Question> questions = questionService.findByCategory(question.getCategoryId());
+    public Result listybycategory(QuestionQuery query) {
+        List<Question> questions = questionService.findByCategoryId(query.getCategoryId(), query.getRecursion());
+        return Result.success(questions);
+    }
+
+    @RequestMapping(value = "listreviewbycategory", method = RequestMethod.GET)
+    @ResponseBody
+    public Result listReviewByCategory(QuestionQuery query) {
+        List<Question> questions = questionService.findNeedReviews(query.getCategoryId(), true);
         return Result.success(questions);
     }
 

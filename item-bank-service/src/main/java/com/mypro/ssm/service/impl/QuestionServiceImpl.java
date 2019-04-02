@@ -2,10 +2,10 @@ package com.mypro.ssm.service.impl;
 
 import com.mypro.exception.BusinessException;
 import com.mypro.ssm.common.CodeMsg;
-import com.mypro.ssm.query.QuestionQuery;
 import com.mypro.ssm.mapper.QuestionMapper;
 import com.mypro.ssm.po.Category;
 import com.mypro.ssm.po.Question;
+import com.mypro.ssm.query.QuestionQuery;
 import com.mypro.ssm.service.CategoryService;
 import com.mypro.ssm.service.QuestionService;
 import com.mypro.util.Ebbinghaus;
@@ -42,14 +42,26 @@ public class QuestionServiceImpl implements QuestionService {
 
     @Override
     public List<Question> findNeedReviews() {
+        return findNeedReviews(null, false);
+    }
+
+    @Override
+    public List<Question> findNeedReviews(Long categoryId, Boolean recursion) {
         List<Question> result = new ArrayList<>();
-        List<Question> questions = questionMapper.findAll();
-        for (int i = 0; i < questions.size(); i++) {
-            if (Ebbinghaus.needRecite(questions.get(i))) {
-                result.add(questions.get(i));
+        List<Question> questions;
+        if (categoryId == null) {
+            questions = findAll();
+        } else {
+            questions = findByCategoryId(categoryId, recursion);
+        }
+        for (Question question : questions) {
+            if (Ebbinghaus.needRecite(question)) {
+                result.add(question);
             }
         }
         return result;
+
+
     }
 
     @Override
@@ -73,14 +85,58 @@ public class QuestionServiceImpl implements QuestionService {
     }
 
     @Override
-    public List<Question> findByCategory(Long categoryId) {
-        return questionMapper.findByCategory(categoryId);
+    public List<Question> findByCategoryId(Long categoryId) {
+        return findByCategoryId(categoryId, false);
+    }
+
+    @Override
+    public List<Question> findByCategoryId(Long categoryId, Boolean recuvre) {
+        List<Question> results = questionMapper.findByCategory(categoryId);
+        if (recuvre) {
+            List<Long> categories = categoryService.findAllChildrenId(categoryId);
+            for (Long cid : categories) {
+                List<Question> questions = questionMapper.findByCategory(cid);
+                results.addAll(questions);
+            }
+        }
+        return results;
+    }
+
+    @Override
+    public Long findCountByCategory(Long categoryId, Boolean recursion) {
+        return findCountByCategory(categoryId, recursion, 1);
+    }
+
+    @Override
+    public Long findCountByCategory(Long categoryId, Boolean recursion, Integer countType) {
+        if (countType == 1) {
+            Question question = new Question();
+            question.setCategoryId(categoryId);
+            Long sum = questionMapper.findCount(question);
+            if (recursion) {
+                List<Long> ids = categoryService.findAllChildrenId(categoryId);
+                for (Long cid : ids) {
+                    Question question2 = new Question();
+                    question2.setCategoryId(cid);
+                    Long count = questionMapper.findCount(question2);
+                    sum += count;
+                }
+            }
+            return sum;
+        }
+        // 查询需要复习的数量
+        else if (countType == 2) {
+            List<Question> needReviews = this.findNeedReviews(categoryId, recursion);
+            Integer size = needReviews.size();
+            return size.longValue();
+        }
+        return null;
     }
 
     @Override
     public void updateByIds(QuestionQuery query) throws BusinessException {
         List<Category> children = categoryService.findChildren(query.getCategoryId());
-        if(children!=null && children.size()>0){
+        if (children != null && children.size() > 0) {
             throw new BusinessException(CodeMsg.NOT_LEAF_CATEGORY_EXCEPTION);
         }
         for (Long id : query.getIds()) {

@@ -18,6 +18,38 @@ public class QuestionQuery extends Question {
      */
     private Boolean rememberFlag;
 
+    /**
+     * 是否递归
+     *
+     * @return
+     */
+    private Boolean recursion = false;
+
+    /**
+     * 查询question数量的类型
+     * 1 查全部数量
+     * 2 查需要复习的数量
+     *
+     * @return
+     */
+    private Integer countType = 1;
+
+    public Integer getCountType() {
+        return countType;
+    }
+
+    public void setCountType(Integer countType) {
+        this.countType = countType;
+    }
+
+    public Boolean getRecursion() {
+        return recursion;
+    }
+
+    public void setRecursion(Boolean recursion) {
+        this.recursion = recursion;
+    }
+
     public Boolean getRememberFlag() {
         return rememberFlag;
     }
