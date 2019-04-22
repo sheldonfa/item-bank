@@ -27,6 +27,9 @@
             },
 
             selectChildCategory: function (id, countType) {
+                if(!countType){
+                    countType=1
+                }
                 var df = $.Deferred();
                 $.ajax({
                     type: "GET",

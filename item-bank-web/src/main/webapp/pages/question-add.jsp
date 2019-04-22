@@ -107,7 +107,6 @@
                                 subSelect.parent().before(newdiv);
                                 subSelect.parent().remove();
                             } else {
-                                console.log(newdiv);
                                 target.parent().after($(newdiv))
                             }
                         }
