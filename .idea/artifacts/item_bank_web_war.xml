@@ -1,0 +1,14 @@
+<component name="ArtifactManager">
+  <artifact type="war" name="item-bank-web:war">
+    <output-path>$PROJECT_DIR$/item-bank-web/target</output-path>
+    <properties id="maven-jee-properties">
+      <options>
+        <module>item-bank-web</module>
+        <packaging>war</packaging>
+      </options>
+    </properties>
+    <root id="archive" name="ssm-web-1.0-SNAPSHOT.war">
+      <element id="artifact" artifact-name="item-bank-web:war exploded" />
+    </root>
+  </artifact>
+</component>

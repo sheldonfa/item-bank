@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/.idea/item-bank.iml" filepath="$PROJECT_DIR$/.idea/item-bank.iml" />
+      <module fileurl="file://$PROJECT_DIR$/item-bank-dao/item-bank-dao.iml" filepath="$PROJECT_DIR$/item-bank-dao/item-bank-dao.iml" />
+      <module fileurl="file://$PROJECT_DIR$/item-bank-domain/item-bank-domain.iml" filepath="$PROJECT_DIR$/item-bank-domain/item-bank-domain.iml" />
+      <module fileurl="file://$PROJECT_DIR$/item-bank-main/item-bank-main.iml" filepath="$PROJECT_DIR$/item-bank-main/item-bank-main.iml" />
+      <module fileurl="file://$PROJECT_DIR$/item-bank-parent/item-bank-parent.iml" filepath="$PROJECT_DIR$/item-bank-parent/item-bank-parent.iml" />
+      <module fileurl="file://$PROJECT_DIR$/item-bank-service/item-bank-service.iml" filepath="$PROJECT_DIR$/item-bank-service/item-bank-service.iml" />
+      <module fileurl="file://$PROJECT_DIR$/item-bank-web/item-bank-web.iml" filepath="$PROJECT_DIR$/item-bank-web/item-bank-web.iml" />
+    </modules>
+  </component>
+</project>
