@@ -62,6 +62,13 @@ public class RoleController {
         return Result.success();
     }
 
+    /**
+     *
+     * @param pageNum
+     * @param pageSize
+     * @param model
+     * @return
+     */
     @RequestMapping(value = "show_list/{pageNum}/{pageSize}", method = RequestMethod.GET)
     public String showList(@PathVariable Integer pageNum, @PathVariable Integer pageSize, Model model) {
         PageInfo<Role> pageInfo = roleService.page(pageNum, pageSize);
