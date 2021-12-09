@@ -39,7 +39,7 @@
         <junit.version>4.12</junit.version>
         <pagehelper.version>5.1.4</pagehelper.version>
         <dbsetup.version>2.1.0</dbsetup.version>
-        <jackson.version>2.9.8</jackson.version>
+        <jackson.version>2.9.10.8</jackson.version>
     </properties>
 
     <!--统一管理依赖包-->
